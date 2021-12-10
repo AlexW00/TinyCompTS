@@ -1,3 +1,5 @@
+import ParseResult from "../ts/parser/ParseResult";
+
 /*
 ?: zero-or-one
 +: one-or-more
@@ -6,6 +8,15 @@
 uppercase: rule
 lowercase: token
 */
+let o = {
+  GRAPH: {
+    1: (relationship: any) => {
+      return {
+        graph: relationship,
+      };
+    },
+  },
+};
 
 export default [
   {

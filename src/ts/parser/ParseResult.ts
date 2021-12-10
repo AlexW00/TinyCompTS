@@ -4,9 +4,9 @@ export default class ParseResult {
   name: string;
   results: (Token | ParseResult)[];
 
-  constructor(name: string, definition: (Token | ParseResult)[] = []) {
+  constructor(name: string, results: (Token | ParseResult)[] = []) {
     this.name = name;
-    this.results = definition;
+    this.results = results;
   }
 
   getValue(): Token[] {

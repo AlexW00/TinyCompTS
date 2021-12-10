@@ -10,28 +10,28 @@ lowercase: token
 export default [
   {
     name: "GRAPH",
-    productionRules: [["RELATIONSHIP"]],
+    productionRules: { _: ["RELATIONSHIP"] },
   },
   {
     name: "RELATIONSHIP",
-    productionRules: [["NODE", "LINK", "NODE"]],
+    productionRules: { _: ["NODE", "LINK", "NODE"] },
   },
   {
     name: "NODE",
-    productionRules: [["nodeBrackets"], ["nodeQuotes"]],
+    productionRules: { brackets: ["nodeBrackets"], quotes: ["nodeQuotes"] },
   },
   {
     name: "LINK",
-    productionRules: [
-      ["linkBody", "LINK_DATA", "linkBody", "linkDirectionRight"],
-    ],
+    productionRules: {
+      right: ["linkBody", "LINK_DATA", "linkBody", "linkDirectionRight"],
+    },
   },
   {
     name: "LINK_DATA",
-    productionRules: [
-      ["linkDataStart", "mathOperator", "mathNumber", "linkDataEnd"],
-      ["linkDataStart", "mathOperator", "linkDataEnd"],
-      [
+    productionRules: {
+      op: ["linkDataStart", "mathOperator", "linkDataEnd"],
+      op_num: ["linkDataStart", "mathOperator", "mathNumber", "linkDataEnd"],
+      op_num_spd: [
         "linkDataStart",
         "mathOperator",
         "mathNumber",
@@ -39,7 +39,7 @@ export default [
         "mathNumber",
         "linkDataEnd",
       ],
-    ],
+    },
   },
 ];
 

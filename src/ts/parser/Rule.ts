@@ -8,28 +8,20 @@ export default class Rule {
 
   constructor(name: string, productionRules: (string | Rule)[][]) {
     this.name = name;
-    this.productionRules = productionRules ?? [];
+    this.productionRules = productionRules ?? {};
   }
 
   checkProductionRules(tokens: Token[]): ParseResult | false {
     var checkResult: ParseResult | any = null;
 
-    this.productionRules.every((productionRule, i) => {
-      let t = tokens;
-      let res = this.checkProductionRule(productionRule, t);
-      if (res) {
-        checkResult = res;
-        return false;
+    for (const ruleName in this.productionRules) {
+      const productionRule = this.productionRules[ruleName];
+      checkResult = this.checkProductionRule(productionRule, tokens);
+      if (checkResult) {
+        return checkResult;
       }
-      return true;
-    });
-
-    console.log(checkResult);
-    if (checkResult) {
-      return checkResult as ParseResult;
-    } else {
-      return false;
     }
+    return false;
   }
 
   checkProductionRule(
@@ -39,7 +31,6 @@ export default class Rule {
     let t = [...tokens];
     const parseResult = new ParseResult(this.name);
 
-    // for each symbol in the production rule
     for (let i = 0; i < productionRule.length; i++) {
       const symbol = productionRule[i];
       if (symbol instanceof Rule) {

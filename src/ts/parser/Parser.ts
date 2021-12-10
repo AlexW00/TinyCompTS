@@ -9,14 +9,15 @@ export default class Parser {
     this.grammar = grammar;
     this.startSymbol = startSymbol;
     this.compiledRule = this.compileRuleset(this.grammar, this.startSymbol);
+    console.log(this.compiledRule);
   }
 
   private compileRuleset(grammar: any, name: string): Rule {
     const rawRule = grammar.find((rule: any) => rule.name === name);
     return new Rule(
       name,
-      rawRule.productionRules.map((productionRule: any) => {
-        return productionRule.map((symbol: string) => {
+      Object.keys(rawRule.productionRules).map((ruleName: any) => {
+        return rawRule.productionRules[ruleName].map((symbol: string) => {
           // if symbol starts with uppercase letter it is a nonterminal
           if (symbol[0] === symbol[0].toUpperCase()) {
             return this.compileRuleset(grammar, symbol);
