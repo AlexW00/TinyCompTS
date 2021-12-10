@@ -1,14 +1,15 @@
 import Token from "../lexer/Token";
 import { ParseEndError } from "./ParserError";
 import ParseResult from "./ParseResult";
+import ProductionRule from "./ProductionRule";
 
 export default class Rule {
   name: string;
-  productionRules: (string | Rule)[][];
+  productionRules: ProductionRule[];
 
-  constructor(name: string, productionRules: (string | Rule)[][]) {
+  constructor(name: string, productionRules: ProductionRule[]) {
     this.name = name;
-    this.productionRules = productionRules ?? {};
+    this.productionRules = productionRules;
   }
 
   checkProductionRules(tokens: Token[]): ParseResult | false {
@@ -25,14 +26,14 @@ export default class Rule {
   }
 
   checkProductionRule(
-    productionRule: (string | Rule)[],
+    productionRule: ProductionRule,
     tokens: Token[]
   ): ParseResult | false {
     let t = [...tokens];
-    const parseResult = new ParseResult(this.name);
+    const parseResult = new ParseResult(productionRule);
 
-    for (let i = 0; i < productionRule.length; i++) {
-      const symbol = productionRule[i];
+    for (let i = 0; i < productionRule.symbols.length; i++) {
+      const symbol = productionRule.symbols[i];
       if (symbol instanceof Rule) {
         // non terminal symbol
         const r = symbol.checkProductionRules(t);
@@ -59,7 +60,7 @@ export default class Rule {
       }
     }
     console.log(parseResult);
-    if (parseResult.results.length === productionRule.length) {
+    if (parseResult.results.length === productionRule.symbols.length) {
       return parseResult;
     } else return false;
   }

@@ -1,11 +1,15 @@
 import Token from "../lexer/Token";
+import ProductionRule from "./ProductionRule";
 
 export default class ParseResult {
-  name: string;
+  productionRule: ProductionRule;
   results: (Token | ParseResult)[];
 
-  constructor(name: string, results: (Token | ParseResult)[] = []) {
-    this.name = name;
+  constructor(
+    productionRule: ProductionRule,
+    results: (Token | ParseResult)[] = []
+  ) {
+    this.productionRule = productionRule;
     this.results = results;
   }
 

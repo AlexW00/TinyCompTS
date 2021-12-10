@@ -1,4 +1,5 @@
 import Token from "../lexer/Token.js";
+import ProductionRule from "./ProductionRule.js";
 import Rule from "./Rule.js";
 
 export default class Parser {
@@ -16,13 +17,17 @@ export default class Parser {
     const rawRule = grammar.find((rule: any) => rule.name === name);
     return new Rule(
       name,
-      Object.keys(rawRule.productionRules).map((ruleName: any) => {
-        return rawRule.productionRules[ruleName].map((symbol: string) => {
-          // if symbol starts with uppercase letter it is a nonterminal
-          if (symbol[0] === symbol[0].toUpperCase()) {
-            return this.compileRuleset(grammar, symbol);
-          } else return symbol;
-        });
+      Object.keys(rawRule.productionRules).map((type: any) => {
+        return new ProductionRule(
+          name,
+          type,
+          rawRule.productionRules[type].map((symbol: string) => {
+            // if symbol starts with uppercase letter it is a nonterminal
+            if (symbol[0] === symbol[0].toUpperCase()) {
+              return this.compileRuleset(grammar, symbol);
+            } else return symbol;
+          })
+        );
       })
     );
   }
