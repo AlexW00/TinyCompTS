@@ -2,7 +2,6 @@ import Token from "../lexer/Token.js";
 import Rule from "./Rule.js";
 
 export default class Parser {
-
   grammar: any;
   compiledRule: Rule;
   startSymbol: string;
@@ -14,14 +13,17 @@ export default class Parser {
 
   private compileRuleset(grammar: any, name: string): Rule {
     const rawRule = grammar.find((rule: any) => rule.name === name);
-    return new Rule(name, rawRule.definitions.map((definition: any) => {
-      return definition.map((symbol: string) => {
-        // if symbol starts with uppercase letter it is a nonterminal
-        if (symbol[0] === symbol[0].toUpperCase()) {
-          return this.compileRuleset(grammar, symbol);
-        } else return symbol;
+    return new Rule(
+      name,
+      rawRule.productionRules.map((productionRule: any) => {
+        return productionRule.map((symbol: string) => {
+          // if symbol starts with uppercase letter it is a nonterminal
+          if (symbol[0] === symbol[0].toUpperCase()) {
+            return this.compileRuleset(grammar, symbol);
+          } else return symbol;
+        });
       })
-    }));
+    );
   }
 
   parse(tokens: Token[]) {
@@ -29,8 +31,7 @@ export default class Parser {
     const filteredTokens = tokens.filter(function (obj) {
       return obj.type !== "whitespace";
     });
-    const r = this.compiledRule.check(filteredTokens);
-    console.table(r);
+    const r = this.compiledRule.checkProductionRules(filteredTokens);
     return r;
   }
 }

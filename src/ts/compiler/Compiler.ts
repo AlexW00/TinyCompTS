@@ -20,8 +20,8 @@
 - Attribute grammar 
 */
 
-import Lexer from "./lexer/Lexer";
-import Parser from "./parser/Parser";
+import Lexer from "../lexer/Lexer";
+import Parser from "../parser/Parser";
 
 export default class Compiler {
   lexer: Lexer;

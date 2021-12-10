@@ -3,21 +3,20 @@ import { ParseEndError } from "./ParserError";
 import ParseResult from "./ParseResult";
 
 export default class Rule {
-  
-name: string;
-definitions: ((string|Rule)[])[];
+  name: string;
+  productionRules: (string | Rule)[][];
 
-  constructor(name: string, definitions: ((string|Rule)[])[]) {
+  constructor(name: string, productionRules: (string | Rule)[][]) {
     this.name = name;
-    this.definitions = definitions ?? [];
+    this.productionRules = productionRules ?? [];
   }
 
-  check (tokens: Token[]): ParseResult|false {
+  checkProductionRules(tokens: Token[]): ParseResult | false {
     var checkResult: ParseResult | any = null;
 
-    this.definitions.every((definition, i) => {
+    this.productionRules.every((productionRule, i) => {
       let t = tokens;
-      let res = this.checkDefinition(definition, t);
+      let res = this.checkProductionRule(productionRule, t);
       if (res) {
         checkResult = res;
         return false;
@@ -31,18 +30,21 @@ definitions: ((string|Rule)[])[];
     } else {
       return false;
     }
-  };
+  }
 
-  checkDefinition  (definition: (string|Rule)[], tokens: Token[]): ParseResult | false {
+  checkProductionRule(
+    productionRule: (string | Rule)[],
+    tokens: Token[]
+  ): ParseResult | false {
     let t = [...tokens];
     const parseResult = new ParseResult(this.name);
 
-    // for each symbol in the definition
-    for (let i = 0; i < definition.length; i++) {
-      const symbol = definition[i];
+    // for each symbol in the production rule
+    for (let i = 0; i < productionRule.length; i++) {
+      const symbol = productionRule[i];
       if (symbol instanceof Rule) {
         // non terminal symbol
-        const r = symbol.check(t);
+        const r = symbol.checkProductionRules(t);
         if (r) {
           const numRemoved = this.getArraySize(r.getValue());
           parseResult.results.push(r);
@@ -66,10 +68,10 @@ definitions: ((string|Rule)[])[];
       }
     }
     console.log(parseResult);
-    if (parseResult.results.length === definition.length) {
+    if (parseResult.results.length === productionRule.length) {
       return parseResult;
     } else return false;
-  };
+  }
 
   checkToken = (token: Token, tokenType: string) => {
     console.log("checking token " + token.type + " against " + tokenType);
@@ -88,8 +90,8 @@ definitions: ((string|Rule)[])[];
     return total;
   };
 
-  addDefinition = (definition: any) => {
-    this.definitions.push(definition);
+  addProductionRule = (productionRule: any) => {
+    this.productionRules.push(productionRule);
   };
 
   startsWithCapital = (word: string) => {
