@@ -3,6 +3,8 @@ import Lexer from "./ts/lexer/Lexer.js";
 import lexerAlphabet from "./config/alphabet.js";
 import Parser from "./ts/parser/Parser.js";
 import grammar from "./config/grammar.js";
+import CodeGenerator from "./ts/semanticAnalyzer/CodeGenerator";
+import attributeGrammar from "./config/attributeGrammar";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -19,9 +21,10 @@ const parser = new Parser(grammar, "GRAPH");
 
 const parsedResult = parser.parse(tokens);
 console.log(parsedResult);
-console.log(window);
+
+const codeGenerator = new CodeGenerator(attributeGrammar);
+if (parsedResult) console.log(codeGenerator.generate(parsedResult));
 
 function identity<T>(arg: T): T {
   return arg;
 }
-let output = identity<string>("Hello");

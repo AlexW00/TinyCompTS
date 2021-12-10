@@ -1,4 +1,5 @@
-import ParseResult from "../ts/parser/ParseResult";
+import Token from "../ts/lexer/Token";
+import SemanticParseResult from "../ts/semanticAnalyzer/SemanticParseResult";
 
 /*
 ?: zero-or-one
@@ -8,51 +9,87 @@ import ParseResult from "../ts/parser/ParseResult";
 uppercase: rule
 lowercase: token
 */
-let o = {
+export default {
   GRAPH: {
-    1: (relationship: any) => {
+    _: (RELATIONSHIP: any) => {
       return {
-        graph: relationship,
+        graph: RELATIONSHIP.value(),
       };
     },
   },
+  RELATIONSHIP: {
+    _: (NODE_1: any, LINK: any, NODE_2: any) => {
+      return {
+        relationship: {
+          node1: NODE_1.value(),
+          link: LINK.value(),
+          node2: NODE_2.value(),
+        },
+      };
+    },
+  },
+  NODE: {
+    quotes: (node: Token) => {
+      return { text: node.value };
+    },
+    brackets: (node: Token) => {
+      return { text: node.value };
+    },
+  },
+  LINK: {
+    right: (
+      linkBody1: Token,
+      LINK_DATA: SemanticParseResult,
+      linkBody2: Token,
+      linkDirectionRight: Token
+    ) => {
+      return {
+        link: {
+          linkData: LINK_DATA.value(),
+          linkDirections: [linkDirectionRight.type],
+        },
+      };
+    },
+  },
+  LINK_DATA: {
+    op: (linkDataStart: Token, mathOperator: Token, linkDataEnd: Token) => {
+      return {
+        linkData: {
+          mathOperator: mathOperator.value,
+        },
+      };
+    },
+  },
+  op_num: (
+    linkDataStart: Token,
+    mathOperator: Token,
+    mathNumber: Token,
+    linkDataEnd: Token
+  ) => {
+    return {
+      linkData: {
+        mathOperator: mathOperator.value,
+        mathNumber: mathOperator.value,
+      },
+    };
+  },
+  op_num_spd: (
+    linkDataStart: Token,
+    mathOperator: Token,
+    mathNumber1: Token,
+    linkDataSeperator: Token,
+    mathNumber2: Token,
+    linkDataEnd: Token
+  ) => {
+    return {
+      linkData: {
+        mathOperator: mathOperator.value,
+        force: mathNumber1.value,
+        speed: mathNumber2.value,
+      },
+    };
+  },
 };
-
-export default [
-  {
-    name: "GRAPH",
-    productionRules: [["RELATIONSHIP"]],
-  },
-  {
-    name: "RELATIONSHIP",
-    productionRules: [["NODE", "LINK", "NODE"]],
-  },
-  {
-    name: "NODE",
-    productionRules: [["nodeBrackets"], ["nodeQuotes"]],
-  },
-  {
-    name: "LINK",
-    productionRules: [
-      ["linkBody", "LINK_DATA", "linkBody", "linkDirectionRight"],
-    ],
-  },
-  {
-    name: "LINK_DATA",
-    productionRules: [
-      ["linkDataStart", "mathOperator", "mathNumber", "linkDataEnd"],
-      ["linkDataStart", "mathOperator", "linkDataEnd"],
-      [
-        "linkDataStart",
-        "mathOperator",
-        "mathNumber",
-        "linkDataSeperator",
-        "mathNumber",
-        "linkDataEnd",
-      ],
-    ],
-  },
-];
 
 /* 
 ```flowGraph
