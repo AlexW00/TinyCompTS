@@ -13,7 +13,7 @@ export default {
   GRAPH: {
     _: (RELATIONSHIP: any) => {
       return {
-        graph: RELATIONSHIP.value(),
+        graph: RELATIONSHIP.value,
       };
     },
   },
@@ -21,9 +21,9 @@ export default {
     _: (NODE_1: any, LINK: any, NODE_2: any) => {
       return {
         relationship: {
-          node1: NODE_1.value(),
-          link: LINK.value(),
-          node2: NODE_2.value(),
+          node1: NODE_1.value,
+          link: LINK.value,
+          node2: NODE_2.value,
         },
       };
     },
@@ -45,8 +45,8 @@ export default {
     ) => {
       return {
         link: {
-          linkData: LINK_DATA.value(),
-          linkDirections: [linkDirectionRight.type],
+          linkData: LINK_DATA.value,
+          linkDirections: [linkDirectionRight.name],
         },
       };
     },

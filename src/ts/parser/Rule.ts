@@ -1,6 +1,6 @@
 import Token from "../lexer/Token";
-import { ParseEndError } from "./ParserError";
-import ParseResult from "./ParseResult";
+import { ParseEndError, ParseRuleError } from "./ParserError";
+import AST from "./AST";
 import ProductionRule from "./ProductionRule";
 
 export default class Rule {
@@ -12,44 +12,38 @@ export default class Rule {
     this.productionRules = productionRules;
   }
 
-  checkProductionRules(tokens: Token[]): ParseResult | false {
-    var checkResult: ParseResult | any = null;
-
+  checkProductionRules(tokens: Token[]): AST {
+    var ast: AST | any = null;
     for (const ruleName in this.productionRules) {
-      const productionRule = this.productionRules[ruleName];
-      checkResult = this.checkProductionRule(productionRule, tokens);
-      if (checkResult) {
-        return checkResult;
-      }
+      ast = this.checkProductionRule(this.productionRules[ruleName], tokens);
+      if (ast) return ast;
     }
-    return false;
+    throw new ParseRuleError();
   }
 
   checkProductionRule(
     productionRule: ProductionRule,
     tokens: Token[]
-  ): ParseResult | false {
+  ): AST | false {
     let t = [...tokens];
-    const parseResult = new ParseResult(productionRule);
+    const ast = new AST(productionRule);
 
     for (let i = 0; i < productionRule.symbols.length; i++) {
       const symbol = productionRule.symbols[i];
       if (symbol instanceof Rule) {
         // non terminal symbol
-        const r = symbol.checkProductionRules(t);
-        if (r) {
-          const numRemoved = this.getArraySize(r.getValue());
-          parseResult.results.push(r);
+        const symbolAst = symbol.checkProductionRules(t);
+        if (symbolAst) {
+          const numRemoved = this.getArraySize(symbolAst.getLeafNodes());
+          ast.childNodes.push(symbolAst);
           t = t.slice(numRemoved);
-        } else {
-          break;
-        }
+        } else break;
       } else {
         // terminal symbol
         if (this.checkToken(t[0], symbol)) {
           const lastToken = t.shift();
           if (lastToken) {
-            parseResult.results.push(lastToken);
+            ast.childNodes.push(lastToken);
           } else {
             throw new ParseEndError();
           }
@@ -59,16 +53,27 @@ export default class Rule {
         }
       }
     }
-    console.log(parseResult);
-    if (parseResult.results.length === productionRule.symbols.length) {
-      return parseResult;
+    console.log(ast);
+    if (ast.childNodes.length === productionRule.symbols.length) {
+      return ast;
     } else return false;
   }
 
+  checkNonTerminal(ast: AST, symbol: Rule, t: Token[]): Boolean {
+    const symbolAst = symbol.checkProductionRules(t);
+    if (symbolAst) {
+      const numRemoved = this.getArraySize(symbolAst.getLeafNodes());
+      ast.childNodes.push(symbolAst);
+      t = t.slice(numRemoved);
+      return true;
+    }
+    return false;
+  }
+
   checkToken = (token: Token, tokenType: string) => {
-    console.log("checking token " + token.type + " against " + tokenType);
-    console.log(token.type === tokenType);
-    if (token.type === tokenType) return token;
+    console.log("checking token " + token.name + " against " + tokenType);
+    console.log(token.name === tokenType);
+    if (token.name === tokenType) return token;
     else return null;
   };
 
@@ -84,10 +89,6 @@ export default class Rule {
 
   addProductionRule = (productionRule: any) => {
     this.productionRules.push(productionRule);
-  };
-
-  startsWithCapital = (word: string) => {
-    return word.charAt(0) === word.charAt(0).toUpperCase();
   };
 
   findRule = (rule: Rule, rules: Rule[]) => {

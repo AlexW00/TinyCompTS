@@ -35,7 +35,7 @@ export default class Parser {
   parse(tokens: Token[]) {
     // filter out whitespace tokens
     const filteredTokens = tokens.filter(function (obj) {
-      return obj.type !== "whitespace";
+      return obj.name !== "whitespace";
     });
     const r = this.compiledRule.checkProductionRules(filteredTokens);
     return r;
