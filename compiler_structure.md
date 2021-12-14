@@ -6,6 +6,7 @@
 
 #### 1. Lexing
 
+- use LexicalGrammar to define tokens
 - Convert input string into sequence of tokens
 
 #### 2. Parsing (= tagging tokens)
@@ -16,4 +17,4 @@
 ## Semantic analysis (= synthesizing js from tagged tokens)
 
 - Convert input parse tree into a symbol table by adding semantic information
-- Attribute grammar
+- S-attribute grammar (with support for global variables)

@@ -1,4 +1,4 @@
-import attributeGrammar from "../../config/attributeGrammar";
+import attributeGrammar from "../../config/attributeGrammar/semanticRules";
 import AST from "../parser/AST";
 import AAST from "./AAST";
 

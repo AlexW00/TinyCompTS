@@ -1,10 +1,10 @@
 import "./style.css";
 import Lexer from "./ts/lexer/Lexer.js";
-import lexerAlphabet from "./config/alphabet.js";
+import lexerAlphabet from "./config/attributeGrammar/lexicalRules.js";
 import Parser from "./ts/parser/Parser.js";
-import grammar from "./config/grammar.js";
+import grammar from "./config/attributeGrammar/syntacticRules.js";
 import CodeGenerator from "./ts/semanticAnalyzer/CodeGenerator";
-import attributeGrammar from "./config/attributeGrammar";
+import attributeGrammar from "./config/attributeGrammar/semanticRules";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 

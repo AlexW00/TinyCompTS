@@ -1,4 +1,10 @@
 import { AttributedSymbol } from "../parser/Symbol";
+
+// ====================================================== //
+// ======================== Token ======================= //
+// ====================================================== //
+
+// A token is a terminal symbol that's used to represent a class of lexemes.
 export default class Token implements AttributedSymbol {
   static numOfTokens = 0;
 
@@ -7,7 +13,7 @@ export default class Token implements AttributedSymbol {
   isTerminal: boolean = true;
   value: any;
 
-  // Token attributes
+  // Token specific attributes
   line: number;
   char: number;
   id: number;

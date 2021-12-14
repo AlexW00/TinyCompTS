@@ -5,12 +5,14 @@ import { InvalidCharacterError } from "./LexerError.js";
 // ############################### Lexer ############################### //
 // ##################################################################### //
 
-export default class Lexer {
+// Lexer, which converts a string into a stream of tokens.
+// The lexer is implemented as a finite state machine and uses lexical rules defined in lexicalRules to determine valid tokens.
 
-  lexerGrammar: any[];
+export default class Lexer {
+  lexicalRules: any[];
 
   constructor(lexerGrammar: any[]) {
-    this.lexerGrammar = lexerGrammar;
+    this.lexicalRules = lexerGrammar;
   }
 
   // transforms a string into an array of tokens
@@ -35,14 +37,19 @@ export default class Lexer {
   };
 
   // tries to return the next token in the input string
-  #matchNextToken = (input: string, pos: number, line: number, char:number): any => {
+  #matchNextToken = (
+    input: string,
+    pos: number,
+    line: number,
+    char: number
+  ): any => {
     let match = {
       type: null,
       token: "",
     };
 
-    // Check if we have a match for a token for each rule in the lexer grammar
-    this.lexerGrammar.forEach((rule) => {
+    // Check if we have matches, and if so, return the longest one → maximum munch algorithm
+    this.lexicalRules.forEach((rule) => {
       const r = new RegExp("^" + rule.regex.source),
         token = r.exec(input.substr(pos));
 
@@ -55,15 +62,13 @@ export default class Lexer {
       }
     });
 
-    // Increment pos, line, char depending on whether we found a newline or normal token
+    // Update pos, line, char
     if (match.type != null) {
       if (match.type === "newline") {
         line++;
         char = 0;
       } else char += match.token.length;
-
       pos += match.token.length;
-
       return {
         token: new Token(match.type, match.token, line, char),
         pos,

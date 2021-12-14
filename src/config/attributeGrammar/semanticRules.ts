@@ -1,5 +1,5 @@
-import Token from "../ts/lexer/Token";
-import SemanticParseResult from "../ts/semanticAnalyzer/SemanticParseResult";
+import Token from "../../ts/lexer/Token";
+import AAST from "../../ts/semanticAnalyzer/AAST";
 
 /*
 ?: zero-or-one
@@ -39,7 +39,7 @@ export default {
   LINK: {
     right: (
       linkBody1: Token,
-      LINK_DATA: SemanticParseResult,
+      LINK_DATA: AAST,
       linkBody2: Token,
       linkDirectionRight: Token
     ) => {
