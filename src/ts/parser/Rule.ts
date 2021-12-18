@@ -1,6 +1,6 @@
 import Token from "../lexer/Token";
 import { ParseEndError, ParseRuleError } from "./ParserError";
-import AST from "./AST";
+import SyntaxParseTree from "./SyntaxParseTree";
 import ProductionRule from "./ProductionRule";
 
 export default class Rule {
@@ -12,8 +12,8 @@ export default class Rule {
     this.productionRules = productionRules;
   }
 
-  checkProductionRules(tokens: Token[]): AST {
-    var ast: AST | any = null;
+  checkProductionRules(tokens: Token[]): SyntaxParseTree {
+    var ast: SyntaxParseTree | any = null;
     for (const ruleName in this.productionRules) {
       ast = this.checkProductionRule(this.productionRules[ruleName], tokens);
       if (ast) return ast;
@@ -24,9 +24,9 @@ export default class Rule {
   checkProductionRule(
     productionRule: ProductionRule,
     tokens: Token[]
-  ): AST | false {
+  ): SyntaxParseTree | false {
     let t = [...tokens];
-    const ast = new AST(productionRule);
+    const ast = new SyntaxParseTree(productionRule);
 
     for (let i = 0; i < productionRule.symbols.length; i++) {
       const symbol = productionRule.symbols[i];
@@ -34,7 +34,7 @@ export default class Rule {
         // non terminal symbol
         const symbolAst = symbol.checkProductionRules(t);
         if (symbolAst) {
-          const numRemoved = this.getArraySize(symbolAst.getLeafNodes());
+          const numRemoved = this.getArraySize(symbolAst.getLeaves());
           ast.childNodes.push(symbolAst);
           t = t.slice(numRemoved);
         } else break;
@@ -59,10 +59,10 @@ export default class Rule {
     } else return false;
   }
 
-  checkNonTerminal(ast: AST, symbol: Rule, t: Token[]): Boolean {
+  checkNonTerminal(ast: SyntaxParseTree, symbol: Rule, t: Token[]): Boolean {
     const symbolAst = symbol.checkProductionRules(t);
     if (symbolAst) {
-      const numRemoved = this.getArraySize(symbolAst.getLeafNodes());
+      const numRemoved = this.getArraySize(symbolAst.getLeaves());
       ast.childNodes.push(symbolAst);
       t = t.slice(numRemoved);
       return true;

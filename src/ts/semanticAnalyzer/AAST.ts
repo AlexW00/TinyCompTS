@@ -1,9 +1,9 @@
-import AST from "../parser/AST";
+import SyntaxParseTree from "../parser/SyntaxParseTree";
 import Token from "../lexer/Token";
 import { AttributedSymbol } from "../parser/Symbol";
 
 // Attributed abstract syntax tree
-export default class AAST extends AST implements AttributedSymbol {
+export default class AAST extends SyntaxParseTree implements AttributedSymbol {
   // implement AttributedSymbol interface
   value: any;
 
@@ -14,7 +14,7 @@ export default class AAST extends AST implements AttributedSymbol {
   semanticRule: (...args: any) => any;
   attributeGrammar: any;
 
-  constructor(ast: AST, attributeGrammar: any) {
+  constructor(ast: SyntaxParseTree, attributeGrammar: any) {
     super(ast.productionRule, ast.childNodes);
 
     this.semanticRule = this.findSemanticRule(attributeGrammar, ast);
@@ -24,19 +24,19 @@ export default class AAST extends AST implements AttributedSymbol {
     this.value = this.semanticRule(...this.childNodes);
   }
 
-  mapChildNodes(ast: AST): (AAST | Token)[] {
+  mapChildNodes(ast: SyntaxParseTree): (AAST | Token)[] {
     return ast.childNodes.map((r) => {
       if (r.isTerminal) {
         return r as Token;
       } else {
-        return new AAST(r as AST, this.attributeGrammar);
+        return new AAST(r as SyntaxParseTree, this.attributeGrammar);
       }
     });
   }
 
   findSemanticRule(
     attributeGrammar: any,
-    parseResult: AST
+    parseResult: SyntaxParseTree
   ): (...args: any) => any {
     const f =
       attributeGrammar[parseResult.productionRule.ruleName][

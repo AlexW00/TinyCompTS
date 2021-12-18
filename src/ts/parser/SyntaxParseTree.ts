@@ -2,7 +2,7 @@ import Token from "../lexer/Token";
 import ProductionRule from "./ProductionRule";
 import { Symbol } from "./Symbol";
 
-export default class AST implements Symbol {
+export default class SyntaxParseTree implements Symbol {
   // implement Symbol interface
   name: string;
   isTerminal: boolean = false;
@@ -18,13 +18,13 @@ export default class AST implements Symbol {
     this.childNodes = childNodes;
   }
 
-  getLeafNodes(): Symbol[] {
+  getLeaves(): Symbol[] {
     const value = [];
     for (const item of this.childNodes) {
       if (item.isTerminal) {
         value.push(item);
       } else {
-        value.push(...(item as AST).getLeafNodes());
+        value.push(...(item as SyntaxParseTree).getLeaves());
       }
     }
     return value;
