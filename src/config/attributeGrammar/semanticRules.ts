@@ -45,7 +45,7 @@ export default {
     ) => {
       return {
         link: {
-          linkData: LINK_DATA.value,
+          linkData: LINK_DATA.token,
           linkDirections: [linkDirectionRight.name],
         },
       };

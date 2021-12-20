@@ -1,4 +1,4 @@
-import Token from "../../ts/lexer/Token";
+import Token from "../lexer/Token";
 import Attribute from "./Attribute";
 import SemanticContext from "./SemanticContext";
 

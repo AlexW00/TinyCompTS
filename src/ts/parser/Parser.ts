@@ -1,10 +1,10 @@
 import Token from "../lexer/Token.js";
 import ProductionRule from "./ProductionRule.js";
-import Rule from "./Rule.js";
+import SyntaxRule from "./SyntaxRule.js";
 
 export default class Parser {
   grammar: any;
-  compiledRule: Rule;
+  compiledRule: SyntaxRule;
   startSymbol: string;
   constructor(grammar: any, startSymbol: string) {
     this.grammar = grammar;
@@ -13,9 +13,9 @@ export default class Parser {
     console.log(this.compiledRule);
   }
 
-  private compileRuleset(grammar: any, name: string): Rule {
+  private compileRuleset(grammar: any, name: string): SyntaxRule {
     const rawRule = grammar.find((rule: any) => rule.name === name);
-    return new Rule(
+    return new SyntaxRule(
       name,
       Object.keys(rawRule.productionRules).map((type: any) => {
         return new ProductionRule(

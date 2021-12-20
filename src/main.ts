@@ -5,6 +5,7 @@ import Parser from "./ts/parser/Parser.js";
 import grammar from "./config/attributeGrammar/syntacticRules.js";
 import CodeGenerator from "./ts/semanticAnalyzer/CodeGenerator";
 import attributeGrammar from "./config/attributeGrammar/semanticRules";
+import SyntaxParseTree from "./ts/parser/SyntaxParseTree";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -19,12 +20,8 @@ const tokens = lexer.tokenize(`[[Hithere]]-(+)->"yourdope"`);
 console.log(tokens);
 const parser = new Parser(grammar, "GRAPH");
 
-const parsedResult = parser.parse(tokens);
-console.log(parsedResult);
+const syntaxParseTree = new SyntaxParseTree(parser.parse(tokens));
+console.log(syntaxParseTree);
 
 const codeGenerator = new CodeGenerator(attributeGrammar);
-if (parsedResult) console.log(codeGenerator.generate(parsedResult));
-
-function identity<T>(arg: T): T {
-  return arg;
-}
+if (syntaxParseTree) console.log(codeGenerator.generate(syntaxParseTree));

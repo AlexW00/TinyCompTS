@@ -1,31 +1,34 @@
-import { Symbol } from "./Symbol";
+import Token from "../lexer/Token";
 import ProductionRule from "./ProductionRule";
+import { Symbol } from "./Symbol";
 
 export default class SyntaxParseTreeNode implements Symbol {
+  // implement Symbol interface
   name: string;
   isTerminal: boolean = false;
 
+  // AST specific attributes
   productionRule: ProductionRule;
   childNodes: SyntaxParseTreeNode[];
+  token: Token | null;
 
   constructor(
     productionRule: ProductionRule,
-    childNodes: SyntaxParseTreeNode[]
+    childNodes: SyntaxParseTreeNode[] = [],
+    value: Token | null = null
   ) {
     this.name = productionRule.ruleName;
-
     this.productionRule = productionRule;
     this.childNodes = childNodes;
+    this.token = value;
+    if (value) this.isTerminal = true;
   }
 
-  getLeaves(): Symbol[] {
+  getLeaves(): SyntaxParseTreeNode[] {
     const value = [];
-    for (const childNode of this.childNodes) {
-      if (childNode.isTerminal) {
-        value.push(childNode);
-      } else {
-        value.push(...(childNode as SyntaxParseTreeNode).getLeaves());
-      }
+    for (const node of this.childNodes) {
+      if (node.isTerminal) value.push(node);
+      else value.push(...node.getLeaves());
     }
     return value;
   }
