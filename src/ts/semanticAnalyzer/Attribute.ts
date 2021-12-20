@@ -1,6 +1,9 @@
 export default class Attribute {
+  // the name of the attribute
   name: string;
+  // the attributes that this attribute depends on
   deps: Attribute[] = [];
+  // the semantic function of the attribute
   semFun: (...args: Attribute[]) => any;
 
   constructor(
@@ -13,6 +16,7 @@ export default class Attribute {
     this.deps = deps;
   }
 
+  // executes the semantic function of the attribute
   value(): any {
     return this.semFun(...this.deps);
   }

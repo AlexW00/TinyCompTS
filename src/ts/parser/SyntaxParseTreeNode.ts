@@ -15,13 +15,13 @@ export default class SyntaxParseTreeNode implements Symbol {
   constructor(
     productionRule: ProductionRule,
     childNodes: SyntaxParseTreeNode[] = [],
-    value: Token | null = null
+    token: Token | null = null
   ) {
     this.name = productionRule.ruleName;
     this.productionRule = productionRule;
     this.childNodes = childNodes;
-    this.token = value;
-    if (value) this.isTerminal = true;
+    this.token = token;
+    if (token) this.isTerminal = true;
   }
 
   getLeaves(): SyntaxParseTreeNode[] {

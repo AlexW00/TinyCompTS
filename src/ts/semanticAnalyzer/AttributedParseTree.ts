@@ -1,6 +1,7 @@
 import SyntaxParseTree from "../parser/SyntaxParseTree";
 import AttributedParseTreeNode from "./AttributedParseTreeNode";
 
+// A tree consisting of attributed nodes
 export default class AttributedParseTree {
   rootNode: AttributedParseTreeNode;
 

@@ -1,5 +1,6 @@
 import Token from "../../ts/lexer/Token";
-import AAST from "../../ts/semanticAnalyzer/AAST";
+import Attribute from "../../ts/semanticAnalyzer/Attribute";
+import SemanticContext from "../../ts/semanticAnalyzer/SemanticContext";
 
 /*
 ?: zero-or-one
@@ -11,83 +12,160 @@ lowercase: token
 */
 export default {
   GRAPH: {
-    _: (RELATIONSHIP: any) => {
-      return {
-        graph: RELATIONSHIP.value,
-      };
+    _: (RELATIONSHIP: SemanticContext) => {
+      const GRAPH = new SemanticContext();
+      GRAPH.addAttribute(
+        new Attribute(
+          "val",
+          [RELATIONSHIP.getAttribute("val")],
+          (relationship) => {
+            return {
+              graph: relationship.value(),
+            };
+          }
+        )
+      );
+      return GRAPH;
     },
   },
   RELATIONSHIP: {
-    _: (NODE_1: any, LINK: any, NODE_2: any) => {
-      return {
-        relationship: {
-          node1: NODE_1.value,
-          link: LINK.value,
-          node2: NODE_2.value,
-        },
-      };
+    _: (
+      NODE_1: SemanticContext,
+      LINK: SemanticContext,
+      NODE_2: SemanticContext
+    ) => {
+      const RELATIONSHIP = new SemanticContext();
+      RELATIONSHIP.addAttribute(
+        new Attribute(
+          "val",
+          [
+            NODE_1.getAttribute("val"),
+            LINK.getAttribute("val"),
+            NODE_2.getAttribute("val"),
+          ],
+          (node1, link, node2) => {
+            return {
+              relationship: {
+                node1: node1.value(),
+                link: link.value(),
+                node2: node2.value(),
+              },
+            };
+          }
+        )
+      );
+
+      return RELATIONSHIP;
     },
   },
   NODE: {
-    quotes: (node: Token) => {
-      return { text: node.value };
+    quotes: (node: SemanticContext) => {
+      const NODE = new SemanticContext();
+      NODE.addAttribute(
+        new Attribute("val", [], () => node.getAttribute("lex").value())
+      );
+      return NODE;
     },
-    brackets: (node: Token) => {
-      return { text: node.value };
+    brackets: (node: SemanticContext) => {
+      const NODE = new SemanticContext();
+      console.log(node);
+      console.log(Object.keys(node));
+      NODE.addAttribute(
+        new Attribute("val", [], () => node.getAttribute("lex").value())
+      );
+      return NODE;
     },
   },
   LINK: {
     right: (
-      linkBody1: Token,
-      LINK_DATA: AAST,
-      linkBody2: Token,
-      linkDirectionRight: Token
+      linkBody1: SemanticContext,
+      LINK_DATA: SemanticContext,
+      linkBody2: SemanticContext,
+      linkDirectionRight: SemanticContext
     ) => {
-      return {
-        link: {
-          linkData: LINK_DATA.token,
-          linkDirections: [linkDirectionRight.name],
-        },
-      };
+      const LINK = new SemanticContext();
+
+      LINK.addAttribute(
+        new Attribute("val", [LINK_DATA.getAttribute("val")], (linkData) => {
+          return {
+            link: {
+              type: linkData.value(),
+              directions: [linkDirectionRight.getAttribute("val").value()],
+            },
+          };
+        })
+      );
+      return LINK;
     },
   },
   LINK_DATA: {
-    op: (linkDataStart: Token, mathOperator: Token, linkDataEnd: Token) => {
-      return {
-        linkData: {
-          mathOperator: mathOperator.value,
-        },
-      };
+    op: (
+      linkDataStart: SemanticContext,
+      mathOperator: SemanticContext,
+      linkDataEnd: SemanticContext
+    ) => {
+      const LINK_DATA = new SemanticContext();
+      LINK_DATA.addAttribute(
+        new Attribute("val", [], () => {
+          return {
+            linkData: {
+              type: mathOperator.getAttribute("lex").value(),
+            },
+          };
+        })
+      );
+      return LINK_DATA;
     },
   },
   op_num: (
-    linkDataStart: Token,
-    mathOperator: Token,
-    mathNumber: Token,
-    linkDataEnd: Token
+    linkDataStart: SemanticContext,
+    mathOperator: SemanticContext,
+    mathNumber: SemanticContext,
+    linkDataEnd: SemanticContext
   ) => {
-    return {
-      linkData: {
-        mathOperator: mathOperator.value,
-        mathNumber: mathOperator.value,
-      },
-    };
+    const LINK_DATA = new SemanticContext();
+    LINK_DATA.addAttribute(
+      new Attribute("val", [], () => {
+        return {
+          linkData: {
+            type: mathOperator.getAttribute("lex").value(),
+            weight: mathNumber.getAttribute("lex").value(),
+          },
+        };
+      })
+    );
+    return LINK_DATA;
   },
   op_num_spd: (
-    linkDataStart: Token,
-    mathOperator: Token,
-    mathNumber1: Token,
-    linkDataSeperator: Token,
-    mathNumber2: Token,
-    linkDataEnd: Token
+    linkDataStart: SemanticContext,
+    mathOperator: SemanticContext,
+    mathNumber1: SemanticContext,
+    linkDataSeperator: SemanticContext,
+    mathNumber2: SemanticContext,
+    linkDataEnd: SemanticContext
   ) => {
-    return {
-      linkData: {
-        mathOperator: mathOperator.value,
-        force: mathNumber1.value,
-        speed: mathNumber2.value,
-      },
-    };
+    const LINK_DATA = new SemanticContext();
+    LINK_DATA.addAttribute(
+      new Attribute("val", [], () => {
+        return {
+          linkData: {
+            type: mathOperator.getAttribute("lex").value(),
+            weight: mathNumber1.getAttribute("lex").value(),
+            speed: mathNumber2.getAttribute("lex").value(),
+          },
+        };
+      })
+    );
+    return LINK_DATA;
+  },
+
+  TOKEN: {
+    _: (token: Token): SemanticContext => {
+      const TOKEN = new SemanticContext();
+      TOKEN.addAttribute(new Attribute("val", [], () => token.name));
+      TOKEN.addAttribute(new Attribute("lex", [], () => token.value));
+      return TOKEN;
+    },
   },
 };
 

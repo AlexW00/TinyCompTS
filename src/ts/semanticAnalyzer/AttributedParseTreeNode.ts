@@ -1,55 +1,47 @@
 import SyntaxParseTreeNode from "../parser/SyntaxParseTreeNode";
-import Token from "../lexer/Token";
 import SemanticContext from "./SemanticContext";
-import ProductionRule from "../parser/ProductionRule";
+import { MissingSemanticRuleError } from "./SemanticError";
 
-// Attributed abstract syntax tree
-export default class AttributedParseTreeNode {
+export default class AttributedParseTreeNode extends SyntaxParseTreeNode {
+  // override parent property
   childNodes: AttributedParseTreeNode[] = [];
-  token: Token | null = null;
 
+  // APTRN specific properties
   attributeGrammar: any;
   semanticContext: SemanticContext;
-  productionRule: ProductionRule;
-
   value: any;
 
   constructor(PST: SyntaxParseTreeNode, attributeGrammar: any) {
-    this.attributeGrammar = attributeGrammar;
-    if (!PST.isTerminal) this.childNodes = this.mapChildNodes(PST);
-    else this.token = PST.token;
-    this.productionRule = PST.productionRule;
+    super(PST.productionRule, PST.childNodes, PST.token);
 
+    this.attributeGrammar = attributeGrammar;
+    // if child nodes exist, map them as APTRN nodes
+    if (this.childNodes) this.childNodes = this.mapChildNodes(PST);
+    // generate semantic context recursively
     this.semanticContext = this.getContext();
+    // finally, get the value attribute of the semantic context
     this.value = this.semanticContext.getAttribute("val").value();
   }
 
-  mapChildNodes(ast: SyntaxParseTreeNode): AttributedParseTreeNode[] {
-    return ast.childNodes.map((r) => {
-      return new AttributedParseTreeNode(
-        r as SyntaxParseTreeNode,
-        this.attributeGrammar
-      );
+  mapChildNodes(SPTN: SyntaxParseTreeNode): AttributedParseTreeNode[] {
+    return SPTN.childNodes.map((childNode) => {
+      return new AttributedParseTreeNode(childNode, this.attributeGrammar);
     });
   }
 
   getContext(): SemanticContext {
-    let f: Function;
-
-    f =
+    // get the semantic rule function from the attribute grammar
+    let f: Function =
       this.attributeGrammar[this.productionRule.ruleName][
         this.productionRule.type
       ];
-
     if (f)
-      if (this.token) return f(this.token);
+      if (this.token)
+        // terminal node → call standard token semantic function
+        return f(this.token);
+      // non-terminal node → call semantic function with contexts of child nodes
       else return f(...this.childNodes.map((r) => r.getContext()));
-    else
-      throw new Error(
-        "no semantic rule found for rule: " +
-          this.productionRule.ruleName +
-          " type: " +
-          this.productionRule.type
-      );
+    // if no semantic function is found, throw an error
+    else throw new MissingSemanticRuleError(this.productionRule);
   }
 }
