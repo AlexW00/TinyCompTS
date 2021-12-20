@@ -1,5 +1,7 @@
 import attributeGrammar from "../../config/attributeGrammar/semanticRules";
+import attributeGrammar2 from "../pro/semanticRules";
 import SyntaxParseTree from "../parser/SyntaxParseTree";
+import AttributedSyntaxParseTree from "../pro/AttributedSyntaxParseTree";
 import AAST from "./AAST";
 
 export default class CodeGenerator {
@@ -9,9 +11,13 @@ export default class CodeGenerator {
   }
 
   generate(parseResult: SyntaxParseTree) {
-    const semanticParseResult = new AAST(parseResult, attributeGrammar);
+    console.log(parseResult);
+    const semanticParseResult = new AttributedSyntaxParseTree(
+      parseResult,
+      attributeGrammar2
+    );
     console.log(semanticParseResult);
-    console.log(semanticParseResult.getLeaves());
+
     semanticParseResult.childNodes.forEach((node) => {
       console.log("node type");
       console.log(typeof node === typeof SyntaxParseTree);
