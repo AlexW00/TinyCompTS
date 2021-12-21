@@ -40,7 +40,7 @@ export default class AttributedParseTreeNode extends SyntaxParseTreeNode {
         // terminal node → call standard token semantic function
         return f(this.token);
       // non-terminal node → call semantic function with contexts of child nodes
-      else return f(...this.childNodes.map((r) => r.getContext()));
+      else return f(...this.childNodes.map((n) => n.getContext()));
     // if no semantic function is found, throw an error
     else throw new MissingSemanticRuleError(this.productionRule);
   }

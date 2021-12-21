@@ -2,9 +2,18 @@ import Token from "../lexer/Token";
 import { ParseEndError, ParseRuleError } from "./ParserError";
 import SyntaxParseTreeNode from "./SyntaxParseTreeNode";
 import ProductionRule from "./ProductionRule";
+import { Symbol } from "./Symbol";
 
-export default class SyntaxRule {
+// ====================================================== //
+// ===================== SyntaxRule ===================== //
+// ====================================================== //
+
+export default class SyntaxRule implements Symbol {
+  // symbol interface properties
   name: string;
+  isTerminal: boolean = false;
+
+  // SyntaxRule properties
   productionRules: ProductionRule[];
 
   constructor(name: string, productionRules: ProductionRule[]) {
@@ -12,35 +21,40 @@ export default class SyntaxRule {
     this.productionRules = productionRules;
   }
 
+  // check whether the given tokens match one of the production rules
   checkProductionRules(tokens: Token[]): SyntaxParseTreeNode {
-    var CPTN: SyntaxParseTreeNode | any = null;
+    var SPTN: SyntaxParseTreeNode | false = false;
     for (const ruleName in this.productionRules) {
-      CPTN = this.checkProductionRule(this.productionRules[ruleName], tokens);
-      if (CPTN) return CPTN;
+      SPTN = this.checkProductionRule(this.productionRules[ruleName], tokens);
+      if (SPTN) return SPTN;
     }
     throw new ParseRuleError();
   }
 
-  private checkProductionRule(
+  // check whether the given tokens match the given production rule
+  private checkProductionRule = (
     productionRule: ProductionRule,
     tokens: Token[]
-  ): SyntaxParseTreeNode | false {
+  ): SyntaxParseTreeNode | false => {
     let t = [...tokens];
     const candidateNode = new SyntaxParseTreeNode(productionRule);
 
-    for (let i = 0; i < productionRule.symbols.length; i++) {
-      // non-terminal symbol
-      const symbol = productionRule.symbols[i];
-      if (symbol instanceof SyntaxRule) {
-        const candidateNodeChildren = symbol.checkProductionRules(t);
+    // iterate over the production rule's syntax symbols and check whether they match the tokens
+    for (let i = 0; i < productionRule.syntaxSymbols.length; i++) {
+      const symbol = productionRule.syntaxSymbols[i];
+      if (!symbol.isTerminal) {
+        // non-terminal symbol → recursively check its production rules
+        const candidateNodeChildren = (
+          symbol as SyntaxRule
+        ).checkProductionRules(t);
         if (candidateNodeChildren) {
           const numRemoved = candidateNodeChildren.getLeaves().length;
           candidateNode.childNodes.push(candidateNodeChildren);
           t = t.slice(numRemoved);
         } else break;
       } else {
-        // terminal symbol
-        if (t[0].name === symbol) {
+        // terminal symbol → check if the next token matches the terminal symbol
+        if (t[0].name === symbol.name) {
           const lastToken = t.shift();
           if (lastToken) {
             candidateNode.childNodes.push(
@@ -50,23 +64,22 @@ export default class SyntaxRule {
                 lastToken
               )
             );
-          } else {
-            throw new ParseEndError();
-          }
+          } else throw new ParseEndError();
         } else {
-          // not a valid terminal symbol
+          // not a valid terminal symbol, continue parsing
           break;
         }
       }
     }
-    if (candidateNode.childNodes.length === productionRule.symbols.length) {
+    if (candidateNode.childNodes.length === productionRule.syntaxSymbols.length)
       return candidateNode;
-    } else return false;
-  }
+    else return false;
+  };
 
-  findRule = (rule: SyntaxRule, rules: SyntaxRule[]) => {
-    const result = rules.filter((obj) => {
-      return obj.name == rule.name;
+  // Returns the first SyntaxRule from rules, that matches rule.name
+  findRule = (rule: SyntaxRule, rules: SyntaxRule[]): SyntaxRule => {
+    const result = rules.filter((r) => {
+      return r.name == rule.name;
     });
     return result[0];
   };

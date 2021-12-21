@@ -24,8 +24,8 @@ export default class Lexer {
     const tokens = [];
 
     while (pos < input.length) {
-      const matchResult = this.#matchNextToken(input, pos, line, char),
-        match = matchResult?.token;
+      const matchResult = this.#matchNextToken(input, pos, line, char);
+      const match = matchResult?.token;
 
       if (match) {
         // push token to tokens and update pos, line, char

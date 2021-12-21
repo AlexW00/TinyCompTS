@@ -1,10 +1,7 @@
 export default class Attribute {
-  // the name of the attribute
-  name: string;
-  // the attributes that this attribute depends on
-  deps: Attribute[] = [];
-  // the semantic function of the attribute
-  semFun: (...args: Attribute[]) => any;
+  name: string; // the name of the attribute
+  deps: Attribute[] = []; // the attributes that this attribute depends on
+  semFun: (...args: Attribute[]) => any; // the semantic function of the attribute
 
   constructor(
     name: string,

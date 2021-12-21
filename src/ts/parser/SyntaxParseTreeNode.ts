@@ -2,15 +2,19 @@ import Token from "../lexer/Token";
 import ProductionRule from "./ProductionRule";
 import { Symbol } from "./Symbol";
 
+// ====================================================== //
+// ================= SyntaxParseTreeNode ================ //
+// ====================================================== //
+
 export default class SyntaxParseTreeNode implements Symbol {
-  // implement Symbol interface
+  // Symbol interface properties
   name: string;
   isTerminal: boolean = false;
 
-  // AST specific attributes
+  // SyntaxParseTreeNode properties
   productionRule: ProductionRule;
   childNodes: SyntaxParseTreeNode[];
-  token: Token | null;
+  token: Token | null; //TODO: Remove and place inside productionRule??
 
   constructor(
     productionRule: ProductionRule,

@@ -5,6 +5,9 @@
 
 uppercase: rule
 lowercase: token
+
+productionRule: [syntaxSymbol...]
+
 */
 
 export default [
@@ -43,7 +46,7 @@ export default [
   },
 ];
 
-/* 
+/*
 ```flowGraph
 [[Hi there]] -(-;11)-> "not your dope"
 [[Hi there]] <-( / 2 ; 1 )-> "not your rope"

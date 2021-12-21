@@ -1,4 +1,4 @@
-/* 
+/*
 # Compiler structure
 
 ## Front end
@@ -17,26 +17,26 @@
 ## Semantic analysis (= synthesizing js from tagged tokens)
 
 - Convert input parse tree into a symbol table by adding semantic information
-- Attribute grammar 
+- Attribute grammar
 */
 
 import Lexer from "../lexer/Lexer";
 import Parser from "../parser/Parser";
+import CodeGenerator from "../semanticAnalyzer/CodeGenerator";
 
 export default class Compiler {
   lexer: Lexer;
   parser: Parser;
-  // not yet implemented
-  codeGenerator: any;
+  codeGenerator: CodeGenerator;
 
-  constructor(lexer: Lexer, parser: Parser, codeGenerator: any) {
+  constructor(lexer: Lexer, parser: Parser, codeGenerator: CodeGenerator) {
     this.lexer = lexer;
     this.parser = parser;
     this.codeGenerator = codeGenerator;
   }
 
-  compile(source: string) {
-    const tokens = this.lexer.tokenize(source);
+  compile(input: string) {
+    const tokens = this.lexer.tokenize(input);
     //const ast = this.parser.parse(tokens, );
     //const code = this.codeGenerator.generate(ast);
     //return code;

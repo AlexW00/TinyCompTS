@@ -163,7 +163,7 @@ export default {
     _: (token: Token): SemanticContext => {
       const TOKEN = new SemanticContext();
       TOKEN.addAttribute(new Attribute("val", [], () => token.name));
-      TOKEN.addAttribute(new Attribute("lex", [], () => token.value));
+      TOKEN.addAttribute(new Attribute("lex", [], () => token.lex));
       return TOKEN;
     },
   },

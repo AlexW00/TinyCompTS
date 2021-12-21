@@ -1,4 +1,4 @@
-import attributeGrammar2 from "../../config/attributeGrammar/semanticRules";
+import attributeGrammar2 from "../../config/attributeGrammar/semanticRuleset";
 import SyntaxParseTree from "../parser/SyntaxParseTree";
 
 import AttributedParseTree from "./AttributedParseTree";
