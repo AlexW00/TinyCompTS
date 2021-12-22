@@ -2,6 +2,7 @@
 // ########################### LexicalRuleset ########################## //
 // ##################################################################### //
 
+// IMPORT THIS INTERFACE FROM the file /ts/TinyComp.ts
 export default interface LexicalRuleset {
   [name: string]: {
     regex: RegExp;

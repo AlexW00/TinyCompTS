@@ -2,6 +2,7 @@
 // ########################### syntaxRuleset ########################### //
 // ##################################################################### //
 
+// IMPORT THIS INTERFACE FROM the file /ts/TinyComp.ts
 export default interface SyntaxRuleset {
   [syntaxRuleName: string]: {
     [syntaxRuleType: string]: string[];

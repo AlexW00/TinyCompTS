@@ -6,6 +6,7 @@ import SemanticContext from "../../ts/codeGenerator/SemanticContext.ts";
 // ########################## SemanticRuleset ########################## //
 // ##################################################################### //
 
+// IMPORT THIS INTERFACE FROM the file /ts/TinyComp.ts
 export default interface SemanticRuleset {
   [syntaxRuleName: string]: {
     [syntaxRuleType: string]: (...args: SemanticContext[]) => SemanticContext;
