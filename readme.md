@@ -32,7 +32,7 @@ Create an object that implements [AttributeGrammar](/ts/attributeGrammar/attribu
 
 ```
 import TinyComp, {AttributeGrammar, LexicalRuleset, SemanticRuleset, SyntaxRuleset, TinyCompOptions} 
-    from "https://deno.land/x/tiny_comp_ts@v1.0.0";
+    from "https://deno.land/x/tiny_comp_ts@v1.1.0";
 ```
 
 ### ❤️ Npm
