@@ -2,3 +2,4 @@
 *.local
 .fleet
 .idea
+.vscode

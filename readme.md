@@ -4,11 +4,11 @@ A tiny Javascript/Typescript compiler written in vanilla Typescript as a hobby p
 
 ## Usage
 
-### Configure your attribute grammar
+### Configure an attribute grammar
 
-1. Define your lexical rules in ./config/attributeGrammar/lexicalRuleset.ts
-2. Define your syntax rules in ./config/attributeGrammar/syntaxRuleset.ts
-3. Define your semantic rules in ./config/attributeGrammar/semanticRuleset.ts
+1. Define lexical rules in ./config/attributeGrammar/lexicalRuleset.ts
+2. Define syntax rules in ./config/attributeGrammar/syntaxRuleset.ts
+3. Define semantic rules in ./config/attributeGrammar/semanticRuleset.ts
 
 ### Configure ./main.ts 
 
@@ -21,3 +21,8 @@ Install the JS/TS runtime [Deno](https://deno.land/)
 
 Execute
 ```deno run ./main.ts```
+
+### Coming soon:
+
+- npm package?
+- if you wish to use this TinyCompTs in your project you can also just copy this repo for now
