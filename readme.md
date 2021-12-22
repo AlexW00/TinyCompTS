@@ -2,9 +2,9 @@
 
 A tiny Javascript/Typescript compiler written as a hobby project.
 
-# Usage
+## Usage
 
-## Configure ./main.ts 
+### Configure ./main.ts 
 
 1. Define your lexical rules in ./config/attributeGrammar/lexicalRuleset.ts
 2. Define your syntax rules in ./config/attributeGrammar/syntaxRuleset.ts
@@ -12,7 +12,7 @@ A tiny Javascript/Typescript compiler written as a hobby project.
 4. Create a new Compiler object (import from "ts/compiler/Compiler.ts", requires Lexer.ts, Parser.ts, CodeGenerator.ts)
 5. Use compiler.compile("input string) to compile
 
-## Run
+### Run
 
 Install the JS/TS runtime [Deno](https://deno.land/)
 
