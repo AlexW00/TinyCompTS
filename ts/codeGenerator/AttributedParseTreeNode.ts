@@ -2,6 +2,7 @@ import SyntaxParseTreeNode from "../parser/SyntaxParseTreeNode.ts";
 import SemanticContext from "./SemanticContext.ts";
 import { MissingSemanticRuleError } from "./SemanticError.ts";
 import { tokenSemanticFunction } from "../lexer/Token.ts";
+import SemanticRuleset from "../attributeGrammar/semanticRuleset.ts";
 
 // ====================================================== //
 // =============== AttributedParseTreeNode ============== //
@@ -12,14 +13,14 @@ export default class AttributedParseTreeNode extends SyntaxParseTreeNode {
   childNodes: AttributedParseTreeNode[] = [];
 
   // AttributedParseTreeNode specific properties
-  attributeGrammar: any; // the attribute grammar used to generate this node
+  semanticRuleset: SemanticRuleset; // the attribute grammar used to generate this node
   semanticContext: SemanticContext; // the attributes of this node
   value: any; // the value of this node (= "val" attribute of the semantic context)
 
-  constructor(PST: SyntaxParseTreeNode, attributeGrammar: any) {
+  constructor(PST: SyntaxParseTreeNode, semanticRuleset: SemanticRuleset) {
     super(PST.productionRule, PST.childNodes, PST.token);
 
-    this.attributeGrammar = attributeGrammar;
+    this.semanticRuleset = semanticRuleset;
     if (this.childNodes) this.childNodes = this.mapChildNodes(PST); // if child nodes exist, recursively map them as APTRN nodes
     this.semanticContext = this.getContext(); // generate the semantic context recursively
     this.value = this.semanticContext.getAttribute("val").value(); // finally, get the value attribute of the semantic context
@@ -28,7 +29,7 @@ export default class AttributedParseTreeNode extends SyntaxParseTreeNode {
   // Maps the child nodes of a SyntaxParseTreeNode to AttributedParseTreeNodes
   mapChildNodes(SPTN: SyntaxParseTreeNode): AttributedParseTreeNode[] {
     return SPTN.childNodes.map((childNode) => {
-      return new AttributedParseTreeNode(childNode, this.attributeGrammar);
+      return new AttributedParseTreeNode(childNode, this.semanticRuleset);
     });
   }
 
@@ -47,7 +48,7 @@ export default class AttributedParseTreeNode extends SyntaxParseTreeNode {
     if (this.token) return tokenSemanticFunction;
     else
       try {
-        return this.attributeGrammar[this.productionRule.ruleName][
+        return this.semanticRuleset[this.productionRule.ruleName][
           this.productionRule.type
         ];
         // deno-lint-ignore no-unused-vars

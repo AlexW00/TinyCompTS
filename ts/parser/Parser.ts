@@ -3,19 +3,20 @@ import ProductionRule from "./ProductionRule.ts";
 import SyntaxRule from "./SyntaxRule.ts";
 import { Symbol } from "./Symbol.ts";
 import SyntaxParseTree from "./SyntaxParseTree.ts";
+import SyntaxRuleset from "../attributeGrammar/syntaxRuleset.ts";
 
 // ##################################################################### //
 // ############################### Parser ############################## //
 // ##################################################################### //
 
 export default class Parser {
-  syntaxRuleset: any;
+  syntaxRuleset: SyntaxRuleset;
   compiledRuleset: SyntaxRule;
   startSymbol: string;
   ignoreTokensNamed: string[];
 
   constructor(
-    compiledRuleset: any,
+    compiledRuleset: SyntaxRuleset,
     startSymbol: string,
     ignoreTokensNamed: string[] = []
   ) {
@@ -29,16 +30,16 @@ export default class Parser {
   }
 
   // recursively compile the given ruleset into an instance of SyntaxRule
-  private compileRuleset(grammar: any, name: string): SyntaxRule {
-    const rawRule = grammar.find((rule: any) => rule.name === name);
+  private compileRuleset(grammar: SyntaxRuleset, name: string): SyntaxRule {
+    const rawRule = grammar[name];
     if (!rawRule) throw new Error("No rule found with name " + name);
     return new SyntaxRule(
       name,
-      Object.keys(rawRule.productionRules).map((type: any) => {
+      Object.keys(rawRule).map((type: any) => {
         return new ProductionRule(
           name,
           type,
-          rawRule.productionRules[type].map((symbol: string) => {
+          rawRule[type].map((symbol: string) => {
             if (symbol[0] === symbol[0].toUpperCase()) {
               // non-terminal symbol → recursively compile its ruleset
               return this.compileRuleset(grammar, symbol);
@@ -48,6 +49,7 @@ export default class Parser {
               return {
                 name: symbol,
                 isTerminal: true,
+                // deno-lint-ignore ban-types
               } as Symbol;
           })
         );

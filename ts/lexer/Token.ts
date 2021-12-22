@@ -1,6 +1,6 @@
 import { Symbol } from "../parser/Symbol.ts";
-import Attribute from "../semanticAnalyzer/Attribute.ts";
-import SemanticContext from "../semanticAnalyzer/SemanticContext.ts";
+import Attribute from "../codeGenerator/Attribute.ts";
+import SemanticContext from "../codeGenerator/SemanticContext.ts";
 
 // ====================================================== //
 // ======================== Token ======================= //
@@ -18,9 +18,9 @@ export default class Token implements Symbol {
   line: number;
   char: number;
   id: number;
-  lex: any; // the token's lexeme (= the actual string that was matched)
+  lex: string; // the token's lexeme (= the actual string that was matched)
 
-  constructor(type: string, lex: any, line: number, char: number) {
+  constructor(type: string, lex: string, line: number, char: number) {
     this.name = type;
     this.lex = lex;
     this.line = line;

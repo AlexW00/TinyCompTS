@@ -1,5 +1,6 @@
 import Token from "./Token.ts";
 import { InvalidCharacterError } from "./LexerError.ts";
+import LexicalRuleset from "../attributeGrammar/lexicalRuleset.ts";
 
 // ##################################################################### //
 // ############################### Lexer ############################### //
@@ -9,9 +10,9 @@ import { InvalidCharacterError } from "./LexerError.ts";
 // The lexer is implemented as a finite state machine and uses lexical rules defined in lexicalRules to determine valid tokens.
 
 export default class Lexer {
-  lexicalRules: any[];
+  lexicalRules: LexicalRuleset;
 
-  constructor(lexerGrammar: any[]) {
+  constructor(lexerGrammar: LexicalRuleset) {
     this.lexicalRules = lexerGrammar;
   }
 
@@ -44,23 +45,23 @@ export default class Lexer {
     char: number
   ): any => {
     let match = {
-      name: null,
+      name: "",
       token: "",
     };
 
     // Check if we have matches, and if so, return the longest one → maximum munch algorithm
-    this.lexicalRules.forEach((rule) => {
+    for (const [ruleName, rule] of Object.entries(this.lexicalRules)) {
       const r = new RegExp("^" + rule.regex.source),
         token = r.exec(input.substr(pos));
 
       // set result as new match if it's longer
       if (token && token[0].length > match.token.length) {
         match = {
-          name: rule.name,
+          name: ruleName,
           token: token[0],
         };
       }
-    });
+    }
 
     // Update pos, line, char
     if (match.name != null) {

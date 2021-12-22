@@ -1,3 +1,4 @@
+import SemanticRuleset from "../attributeGrammar/semanticRuleset.ts";
 import SyntaxParseTree from "../parser/SyntaxParseTree.ts";
 import AttributedParseTreeNode from "./AttributedParseTreeNode.ts";
 
@@ -8,10 +9,13 @@ import AttributedParseTreeNode from "./AttributedParseTreeNode.ts";
 export default class AttributedParseTree {
   rootNode: AttributedParseTreeNode;
 
-  constructor(syntaxParseTree: SyntaxParseTree, attributeGrammar: any) {
+  constructor(
+    syntaxParseTree: SyntaxParseTree,
+    semanticRuleset: SemanticRuleset
+  ) {
     this.rootNode = new AttributedParseTreeNode(
       syntaxParseTree.rootNode,
-      attributeGrammar
+      semanticRuleset
     );
   }
 

@@ -1,13 +1,22 @@
 // deno-lint-ignore-file
-import Attribute from "../../ts/semanticAnalyzer/Attribute.ts";
-import SemanticContext from "../../ts/semanticAnalyzer/SemanticContext.ts";
+import Attribute from "../../ts/codeGenerator/Attribute.ts";
+import SemanticContext from "../../ts/codeGenerator/SemanticContext.ts";
 
 // ##################################################################### //
 // ########################## SemanticRuleset ########################## //
 // ##################################################################### //
 
-// An example of a semantic ruleset:
-export default {
+export default interface SemanticRuleset {
+  [syntaxRuleName: string]: {
+    [syntaxRuleType: string]: (...args: SemanticContext[]) => SemanticContext;
+  };
+}
+
+// ====================================================== //
+// ======================= Example ====================== //
+// ====================================================== //
+
+const exampleSemanticRuleset: SemanticRuleset = {
   PRINT_FUNCTION: {
     _: (
       printFunctionName: SemanticContext,
@@ -41,3 +50,5 @@ export default {
     // more semantic rules go here
   },
 };
+
+export { exampleSemanticRuleset };

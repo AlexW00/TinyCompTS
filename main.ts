@@ -1,21 +1,31 @@
-import Lexer from "./ts/lexer/Lexer.ts";
-import Parser from "./ts/parser/Parser.ts";
-import CodeGenerator from "./ts/semanticAnalyzer/CodeGenerator.ts";
-import Compiler from "./ts/compiler/Compiler.ts";
+import Compiler, { CompilerOptions } from "./ts/Compiler.ts";
 
-import lexicalRuleset from "./config/exampleAttributeGrammar/exampelLexicalRuleset.ts";
-import syntaxRuleset from "./config/exampleAttributeGrammar/exampleSyntaxRuleset.ts";
-import semanticRuleset from "./config/exampleAttributeGrammar/exampleSemanticRuleset.ts";
+import AttributeGrammar from "./ts/attributeGrammar/attributeGrammar.ts";
+import { exampleLexicalRuleset } from "./ts/attributeGrammar/lexicalRuleset.ts";
+import { exampleSyntaxRuleset } from "./ts/attributeGrammar/syntaxRuleset.ts";
+import { exampleSemanticRuleset } from "./ts/attributeGrammar/semanticRuleset.ts";
 
 // ====================================================== //
 // ======================= Example ====================== //
 // ====================================================== //
 
-const lexer = new Lexer(lexicalRuleset);
-const parser = new Parser(syntaxRuleset, "PRINT_FUNCTION", ["whitespace"]);
-const codeGenerator = new CodeGenerator(semanticRuleset);
+// create an attribute grammar object with the example rulesets
+const attributeGrammar: AttributeGrammar = {
+  lexicalRuleset: exampleLexicalRuleset,
+  syntaxRuleset: exampleSyntaxRuleset,
+  semanticRuleset: exampleSemanticRuleset,
+};
 
-const compiler = new Compiler(lexer, parser, codeGenerator);
+// configure the compiler with the start symbol and the names of the tokens that should be ignored
+const compilerOptions: CompilerOptions = {
+  startSymbol: "PRINT_FUNCTION",
+  ignoreTokensNamed: ["whitespace"],
+};
+
+// instantiate the compiler and compile the input
+const compiler = new Compiler(attributeGrammar, compilerOptions);
 const compileResult = compiler.compile(`print(Hello World)`);
 
+// execute the compiled code (in this case it is a function that prints "Hello World"),
+// but it could be any other JavaScript code like e.g. an object
 compileResult();
