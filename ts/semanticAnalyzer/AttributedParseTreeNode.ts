@@ -1,7 +1,7 @@
-import SyntaxParseTreeNode from "../parser/SyntaxParseTreeNode";
-import SemanticContext from "./SemanticContext";
-import { MissingSemanticRuleError } from "./SemanticError";
-import { tokenSemanticFunction } from "../lexer/Token";
+import SyntaxParseTreeNode from "../parser/SyntaxParseTreeNode.ts";
+import SemanticContext from "./SemanticContext.ts";
+import { MissingSemanticRuleError } from "./SemanticError.ts";
+import { tokenSemanticFunction } from "../lexer/Token.ts";
 
 // ====================================================== //
 // =============== AttributedParseTreeNode ============== //
@@ -35,7 +35,7 @@ export default class AttributedParseTreeNode extends SyntaxParseTreeNode {
   // Returns the semantic context (= Attributes) of this node
   getContext(): SemanticContext {
     // get the corresponding semantic rule function from the attribute grammar
-    let f: Function = this.getSemanticFunction();
+    const f: Function = this.getSemanticFunction();
     if (this.token)
       // is terminal node → call semantic function with the token of this node as argument
       return f(this.token);
@@ -50,6 +50,7 @@ export default class AttributedParseTreeNode extends SyntaxParseTreeNode {
         return this.attributeGrammar[this.productionRule.ruleName][
           this.productionRule.type
         ];
+        // deno-lint-ignore no-unused-vars
       } catch (e) {
         // if no semantic rule is found, throw an error
         throw new MissingSemanticRuleError(this.productionRule);

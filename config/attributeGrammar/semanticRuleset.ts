@@ -1,5 +1,6 @@
-import Attribute from "../../ts/semanticAnalyzer/Attribute";
-import SemanticContext from "../../ts/semanticAnalyzer/SemanticContext";
+// deno-lint-ignore-file no-unused-vars
+import Attribute from "../../ts/semanticAnalyzer/Attribute.ts";
+import SemanticContext from "../../ts/semanticAnalyzer/SemanticContext.ts";
 
 // ##################################################################### //
 // ########################## SemanticRuleset ########################## //

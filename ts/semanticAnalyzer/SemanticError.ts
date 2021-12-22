@@ -1,5 +1,5 @@
-import ProductionRule from "../parser/ProductionRule";
-import Attribute from "./Attribute";
+import ProductionRule from "../parser/ProductionRule.ts";
+import Attribute from "./Attribute.ts";
 
 export class SemanticError extends Error {
   constructor(message: string) {

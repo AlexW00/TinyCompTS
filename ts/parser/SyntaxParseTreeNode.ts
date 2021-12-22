@@ -1,6 +1,6 @@
-import Token from "../lexer/Token";
-import ProductionRule from "./ProductionRule";
-import { Symbol } from "./Symbol";
+import Token from "../lexer/Token.ts";
+import ProductionRule from "./ProductionRule.ts";
+import { Symbol } from "./Symbol.ts";
 
 // ====================================================== //
 // ================= SyntaxParseTreeNode ================ //
@@ -9,7 +9,7 @@ import { Symbol } from "./Symbol";
 export default class SyntaxParseTreeNode implements Symbol {
   // Symbol interface properties
   name: string;
-  isTerminal: boolean = false;
+  isTerminal = false;
 
   // SyntaxParseTreeNode properties
   productionRule: ProductionRule; // ProductionRule that this SyntaxParseTreeNode conforms to

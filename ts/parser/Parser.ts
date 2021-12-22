@@ -1,8 +1,8 @@
-import Token from "../lexer/Token.js";
-import ProductionRule from "./ProductionRule.js";
-import SyntaxRule from "./SyntaxRule.js";
-import { Symbol } from "./Symbol";
-import SyntaxParseTree from "./SyntaxParseTree.js";
+import Token from "../lexer/Token.ts";
+import ProductionRule from "./ProductionRule.ts";
+import SyntaxRule from "./SyntaxRule.ts";
+import { Symbol } from "./Symbol.ts";
+import SyntaxParseTree from "./SyntaxParseTree.ts";
 
 // ##################################################################### //
 // ############################### Parser ############################## //
@@ -57,6 +57,7 @@ export default class Parser {
 
   // parses the given tokens and returns a SyntaxParseTree if successful
   parse(tokens: Token[]): SyntaxParseTree {
+    // deno-lint-ignore no-this-alias
     const context = this;
     const filteredTokens = tokens.filter(function (obj) {
       return context.ignoreTokensNamed.includes(obj.name) ? false : true;

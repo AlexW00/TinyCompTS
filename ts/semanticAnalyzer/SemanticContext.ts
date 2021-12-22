@@ -1,5 +1,5 @@
-import Attribute from "./Attribute";
-import { DuplicateAttributeError } from "./SemanticError";
+import Attribute from "./Attribute.ts";
+import { DuplicateAttributeError } from "./SemanticError.ts";
 
 // ====================================================== //
 // =================== SemanticContext ================== //

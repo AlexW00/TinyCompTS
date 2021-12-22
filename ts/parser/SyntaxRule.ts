@@ -1,8 +1,8 @@
-import Token from "../lexer/Token";
-import { ParseEndError, ParseRuleError } from "./ParserError";
-import SyntaxParseTreeNode from "./SyntaxParseTreeNode";
-import ProductionRule from "./ProductionRule";
-import { Symbol } from "./Symbol";
+import Token from "../lexer/Token.ts";
+import { ParseEndError, ParseRuleError } from "./ParserError.ts";
+import SyntaxParseTreeNode from "./SyntaxParseTreeNode.ts";
+import ProductionRule from "./ProductionRule.ts";
+import { Symbol } from "./Symbol.ts";
 
 // ====================================================== //
 // ===================== SyntaxRule ===================== //
@@ -11,7 +11,7 @@ import { Symbol } from "./Symbol";
 export default class SyntaxRule implements Symbol {
   // symbol interface properties
   name: string;
-  isTerminal: boolean = false;
+  isTerminal = false;
 
   // SyntaxRule properties
   productionRules: ProductionRule[];
@@ -23,7 +23,7 @@ export default class SyntaxRule implements Symbol {
 
   // check whether the given tokens match one of the production rules
   checkProductionRules(tokens: Token[]): SyntaxParseTreeNode {
-    var SPTN: SyntaxParseTreeNode | false = false;
+    let SPTN: SyntaxParseTreeNode | false = false;
     for (const ruleName in this.productionRules) {
       SPTN = this.checkProductionRule(this.productionRules[ruleName], tokens);
       if (SPTN) return SPTN;

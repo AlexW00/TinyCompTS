@@ -1,5 +1,5 @@
-import SyntaxParseTree from "../parser/SyntaxParseTree";
-import AttributedParseTreeNode from "./AttributedParseTreeNode";
+import SyntaxParseTree from "../parser/SyntaxParseTree.ts";
+import AttributedParseTreeNode from "./AttributedParseTreeNode.ts";
 
 // ====================================================== //
 // ================= AttributeParseTree ================= //

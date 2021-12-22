@@ -1,6 +1,6 @@
-import { Symbol } from "../parser/Symbol";
-import Attribute from "../semanticAnalyzer/Attribute";
-import SemanticContext from "../semanticAnalyzer/SemanticContext";
+import { Symbol } from "../parser/Symbol.ts";
+import Attribute from "../semanticAnalyzer/Attribute.ts";
+import SemanticContext from "../semanticAnalyzer/SemanticContext.ts";
 
 // ====================================================== //
 // ======================== Token ======================= //
@@ -12,7 +12,7 @@ export default class Token implements Symbol {
 
   // Attributed symbol interface attributes
   name: string;
-  isTerminal: boolean = true;
+  isTerminal = true;
 
   // Token specific attributes
   line: number;

@@ -1,4 +1,4 @@
-import SyntaxParseTreeNode from "./SyntaxParseTreeNode";
+import SyntaxParseTreeNode from "./SyntaxParseTreeNode.ts";
 
 // ====================================================== //
 // =================== SyntaxParseTree ================== //

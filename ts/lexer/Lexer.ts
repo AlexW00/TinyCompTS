@@ -1,5 +1,5 @@
-import Token from "./Token.js";
-import { InvalidCharacterError } from "./LexerError.js";
+import Token from "./Token.ts";
+import { InvalidCharacterError } from "./LexerError.ts";
 
 // ##################################################################### //
 // ############################### Lexer ############################### //
@@ -17,9 +17,9 @@ export default class Lexer {
 
   // transforms a string into an array of tokens
   tokenize = (input: string) => {
-    let pos: number = 0,
-      line: number = 1,
-      char: number = 0;
+    let pos = 0,
+      line = 1,
+      char = 0;
 
     const tokens = [];
 

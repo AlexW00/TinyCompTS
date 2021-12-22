@@ -1,4 +1,5 @@
-import { Symbol } from "./Symbol";
+// deno-lint-ignore-file
+import { Symbol } from "./Symbol.ts";
 
 // ====================================================== //
 // =================== ProductionRule =================== //

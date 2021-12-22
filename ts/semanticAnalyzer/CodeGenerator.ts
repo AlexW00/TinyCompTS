@@ -1,5 +1,5 @@
-import SyntaxParseTree from "../parser/SyntaxParseTree";
-import AttributedParseTree from "./AttributedParseTree";
+import SyntaxParseTree from "../parser/SyntaxParseTree.ts";
+import AttributedParseTree from "./AttributedParseTree.ts";
 
 // ##################################################################### //
 // ########################### CodeGenerator ########################### //

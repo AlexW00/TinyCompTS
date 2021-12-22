@@ -20,9 +20,9 @@
 - Attribute grammar
 */
 
-import Lexer from "../lexer/Lexer";
-import Parser from "../parser/Parser";
-import CodeGenerator from "../semanticAnalyzer/CodeGenerator";
+import Lexer from "../lexer/Lexer.ts";
+import Parser from "../parser/Parser.ts";
+import CodeGenerator from "../semanticAnalyzer/CodeGenerator.ts";
 
 export default class Compiler {
   lexer: Lexer;
