@@ -14,7 +14,7 @@ import CodeGenerator from "./codeGenerator/CodeGenerator.ts";
 // Interface that describes extra options for the compiler
 interface TinyCompOptions {
   startSymbol: string; // the start symbol of the grammar (root of the syntax tree)
-  ignoreTokensNamed?: string[]; // the names of the tokens that should be ignored by the lexer
+  ignoreTokensNamed?: string[]; // the names of the tokens that should be ignored during parsing
 }
 
 export default class TinyComp {
