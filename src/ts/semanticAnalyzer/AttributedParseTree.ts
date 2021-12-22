@@ -1,7 +1,10 @@
 import SyntaxParseTree from "../parser/SyntaxParseTree";
 import AttributedParseTreeNode from "./AttributedParseTreeNode";
 
-// A tree consisting of attributed nodes
+// ====================================================== //
+// ================= AttributeParseTree ================= //
+// ====================================================== //
+
 export default class AttributedParseTree {
   rootNode: AttributedParseTreeNode;
 
@@ -12,6 +15,7 @@ export default class AttributedParseTree {
     );
   }
 
+  // Returns the value of the root node of this AttributedParseTree.
   value(): any {
     return this.rootNode.value;
   }

@@ -1,10 +1,14 @@
 import Attribute from "./Attribute";
 import { DuplicateAttributeError } from "./SemanticError";
 
-export default class SemanticContext {
-  attributes: Attribute[] = [];
+// ====================================================== //
+// =================== SemanticContext ================== //
+// ====================================================== //
 
-  // adds an attribute to the context
+export default class SemanticContext {
+  attributes: Attribute[] = []; // the list of attributes this context consists of
+
+  // adds an attribute to this context
   addAttribute(attribute: Attribute) {
     if (this.attributes.find((attr) => attr.name === attribute.name))
       throw new DuplicateAttributeError(attribute);

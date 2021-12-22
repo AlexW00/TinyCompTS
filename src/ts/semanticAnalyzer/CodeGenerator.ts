@@ -1,17 +1,19 @@
-import attributeGrammar2 from "../../config/attributeGrammar/semanticRuleset";
 import SyntaxParseTree from "../parser/SyntaxParseTree";
-
 import AttributedParseTree from "./AttributedParseTree";
+
+// ##################################################################### //
+// ########################### CodeGenerator ########################### //
+// ##################################################################### //
 
 export default class CodeGenerator {
   attributeGrammar;
   constructor(attributeGrammar: any) {
-    this.attributeGrammar = attributeGrammar;
+    this.attributeGrammar = attributeGrammar; // the attribute grammar (defined in .../semanticTypes.ts)
   }
 
-  // converts a syntax parse tree to an attributed parse tree and returns the semantic value of the root node
+  // converts a syntax parse tree to an attributed parse tree and returns it's semantic value
   generate(parseResult: SyntaxParseTree) {
-    const APT = new AttributedParseTree(parseResult, attributeGrammar2);
+    const APT = new AttributedParseTree(parseResult, this.attributeGrammar);
     return APT.value();
   }
 }

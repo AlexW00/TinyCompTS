@@ -12,9 +12,9 @@ export default class SyntaxParseTreeNode implements Symbol {
   isTerminal: boolean = false;
 
   // SyntaxParseTreeNode properties
-  productionRule: ProductionRule;
-  childNodes: SyntaxParseTreeNode[];
-  token: Token | null; //TODO: Remove and place inside productionRule??
+  productionRule: ProductionRule; // ProductionRule that this SyntaxParseTreeNode conforms to
+  childNodes: SyntaxParseTreeNode[]; // SyntaxSymbols this SyntaxParseTreeNode consists of, empty if this is a terminal
+  token: Token | null; // Null if this is a non terminal, otherwise the token that this node is based on
 
   constructor(
     productionRule: ProductionRule,
@@ -28,6 +28,7 @@ export default class SyntaxParseTreeNode implements Symbol {
     if (token) this.isTerminal = true;
   }
 
+  // Returns all leaf nodes of this node (i.e. all nodes that have no child nodes)
   getLeaves(): SyntaxParseTreeNode[] {
     const value = [];
     for (const node of this.childNodes) {

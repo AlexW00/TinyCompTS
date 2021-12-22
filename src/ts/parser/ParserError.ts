@@ -1,4 +1,3 @@
-import Token from "../lexer/Token";
 export class ParserError extends Error {
   constructor(message: string) {
     super(message);

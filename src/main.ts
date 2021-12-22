@@ -1,10 +1,12 @@
 import "./style.css";
 import Lexer from "./ts/lexer/Lexer.js";
-import lexerAlphabet from "./config/attributeGrammar/lexicalRuleset.js";
 import Parser from "./ts/parser/Parser.js";
-import grammar from "./config/attributeGrammar/syntaxRuleset";
 import CodeGenerator from "./ts/semanticAnalyzer/CodeGenerator";
-import attributeGrammar from "./config/attributeGrammar/semanticRuleset";
+import Compiler from "./ts/compiler/Compiler";
+
+import lexicalRuleset from "./config/exampleAttributeGrammar/exampelLexicalRuleset";
+import syntaxRuleset from "./config/exampleAttributeGrammar/exampleSyntaxRuleset";
+import semanticRuleset from "./config/exampleAttributeGrammar/exampleSemanticRuleset";
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
@@ -13,14 +15,11 @@ app.innerHTML = `
   <a href="https://vitejs.dev/guide/features.html" target="_blank">Documentation</a>
 `;
 
-const lexer = new Lexer(lexerAlphabet);
-const tokens = lexer.tokenize(`[[Hithere]]-(+)-> "yourdope"`);
+const lexer = new Lexer(lexicalRuleset);
+const parser = new Parser(syntaxRuleset, "PRINT_FUNCTION", ["whitespace"]);
+const codeGenerator = new CodeGenerator(semanticRuleset);
 
-console.log(tokens);
-const parser = new Parser(grammar, "GRAPH");
+const compiler = new Compiler(lexer, parser, codeGenerator);
+const compileResult = compiler.compile(`print(helloorld)`);
 
-const syntaxParseTree = parser.parse(tokens, ["whitespace"]);
-console.log(syntaxParseTree);
-
-const codeGenerator = new CodeGenerator(attributeGrammar);
-if (syntaxParseTree) console.log(codeGenerator.generate(syntaxParseTree));
+compileResult();

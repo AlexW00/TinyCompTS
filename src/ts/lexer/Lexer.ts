@@ -44,7 +44,7 @@ export default class Lexer {
     char: number
   ): any => {
     let match = {
-      type: null,
+      name: null,
       token: "",
     };
 
@@ -56,21 +56,21 @@ export default class Lexer {
       // set result as new match if it's longer
       if (token && token[0].length > match.token.length) {
         match = {
-          type: rule.type,
+          name: rule.name,
           token: token[0],
         };
       }
     });
 
     // Update pos, line, char
-    if (match.type != null) {
-      if (match.type === "newline") {
+    if (match.name != null) {
+      if (match.name === "newline") {
         line++;
         char = 0;
       } else char += match.token.length;
       pos += match.token.length;
       return {
-        token: new Token(match.type, match.token, line, char),
+        token: new Token(match.name, match.token, line, char),
         pos,
         line,
         char,

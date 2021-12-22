@@ -1,54 +1,20 @@
-/*
-?: zero-or-one
-+: one-or-more
-*: zero-or-more
+// ##################################################################### //
+// ########################### SyntaxRuleset ########################### //
+// ##################################################################### //
 
-uppercase: rule
-lowercase: token
-
-productionRule: [syntaxSymbol...]
-
-*/
-
+// Define your Syntax Rules here.
+//
+// non-terminals: UPPERCASE_NAME, terminals: lowercaseName
+//
+// Syntax of one syntax rule:
+// {
+//  SYNTAX_RULE_NAME: {
+//    productionRules: {
+//      SYNTAX_RULE_TYPE_1: [SYNTAX_RULE_X, tokenNameX],
+//      SYNTAX_RULE_TYPE_2: [],
+//      ...
+//  }
+//}
 export default [
-  {
-    name: "GRAPH",
-    productionRules: { _: ["RELATIONSHIP"] },
-  },
-  {
-    name: "RELATIONSHIP",
-    productionRules: { _: ["NODE", "LINK", "NODE"] },
-  },
-  {
-    name: "NODE",
-    productionRules: { brackets: ["nodeBrackets"], quotes: ["nodeQuotes"] },
-  },
-  {
-    name: "LINK",
-    productionRules: {
-      right: ["linkBody", "LINK_DATA", "linkBody", "linkDirectionRight"],
-    },
-  },
-  {
-    name: "LINK_DATA",
-    productionRules: {
-      op: ["linkDataStart", "mathOperator", "linkDataEnd"],
-      op_num: ["linkDataStart", "mathOperator", "mathNumber", "linkDataEnd"],
-      op_num_spd: [
-        "linkDataStart",
-        "mathOperator",
-        "mathNumber",
-        "linkDataSeperator",
-        "mathNumber",
-        "linkDataEnd",
-      ],
-    },
-  },
+  // your syntax rules go here
 ];
-
-/*
-```flowGraph
-[[Hi there]] -(-;11)-> "not your dope"
-[[Hi there]] <-( / 2 ; 1 )-> "not your rope"
-[[Hi there]] -(/1)-> "not your sope"
-*/

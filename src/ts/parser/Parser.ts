@@ -4,18 +4,24 @@ import SyntaxRule from "./SyntaxRule.js";
 import { Symbol } from "./Symbol";
 import SyntaxParseTree from "./SyntaxParseTree.js";
 
-// ====================================================== //
-// ======================= Parser ======================= //
-// ====================================================== //
+// ##################################################################### //
+// ############################### Parser ############################## //
+// ##################################################################### //
 
 export default class Parser {
   syntaxRuleset: any;
   compiledRuleset: SyntaxRule;
   startSymbol: string;
+  ignoreTokensNamed: string[];
 
-  constructor(compiledRuleset: any, startSymbol: string) {
+  constructor(
+    compiledRuleset: any,
+    startSymbol: string,
+    ignoreTokensNamed: string[] = []
+  ) {
     this.syntaxRuleset = compiledRuleset; // the uncompiled ruleset
     this.startSymbol = startSymbol; // the symbol that the parser starts with
+    this.ignoreTokensNamed = ignoreTokensNamed; // the names of the tokens that should be ignored by the parser
     this.compiledRuleset = this.compileRuleset(
       this.syntaxRuleset,
       this.startSymbol
@@ -25,6 +31,7 @@ export default class Parser {
   // recursively compile the given ruleset into an instance of SyntaxRule
   private compileRuleset(grammar: any, name: string): SyntaxRule {
     const rawRule = grammar.find((rule: any) => rule.name === name);
+    if (!rawRule) throw new Error("No rule found with name " + name);
     return new SyntaxRule(
       name,
       Object.keys(rawRule.productionRules).map((type: any) => {
@@ -49,9 +56,10 @@ export default class Parser {
   }
 
   // parses the given tokens and returns a SyntaxParseTree if successful
-  parse(tokens: Token[], ignoreTokensNamed: string[] = []): SyntaxParseTree {
+  parse(tokens: Token[]): SyntaxParseTree {
+    const context = this;
     const filteredTokens = tokens.filter(function (obj) {
-      return ignoreTokensNamed.includes(obj.name) ? false : true;
+      return context.ignoreTokensNamed.includes(obj.name) ? false : true;
     });
     return new SyntaxParseTree(
       this.compiledRuleset.checkProductionRules(filteredTokens)

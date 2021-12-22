@@ -35,10 +35,9 @@ export default class Compiler {
     this.codeGenerator = codeGenerator;
   }
 
-  compile(input: string) {
+  compile(input: string): any {
     const tokens = this.lexer.tokenize(input);
-    //const ast = this.parser.parse(tokens, );
-    //const code = this.codeGenerator.generate(ast);
-    //return code;
+    const syntaxParseTree = this.parser.parse(tokens);
+    return this.codeGenerator.generate(syntaxParseTree);
   }
 }

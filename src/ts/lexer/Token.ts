@@ -1,4 +1,6 @@
 import { Symbol } from "../parser/Symbol";
+import Attribute from "../semanticAnalyzer/Attribute";
+import SemanticContext from "../semanticAnalyzer/SemanticContext";
 
 // ====================================================== //
 // ======================== Token ======================= //
@@ -16,7 +18,7 @@ export default class Token implements Symbol {
   line: number;
   char: number;
   id: number;
-  lex: any; // get the token's lexeme (= the actual string that was matched)
+  lex: any; // the token's lexeme (= the actual string that was matched)
 
   constructor(type: string, lex: any, line: number, char: number) {
     this.name = type;
@@ -26,3 +28,12 @@ export default class Token implements Symbol {
     this.id = Token.numOfTokens++;
   }
 }
+
+// The standard semantic function for a token (do not touch)
+// use .getAttribute("lex"/"val") to get either the name or lex attribute of a token
+export const tokenSemanticFunction = (token: Token): SemanticContext => {
+  const TOKEN = new SemanticContext();
+  TOKEN.addAttribute(new Attribute("val", [], () => token.name));
+  TOKEN.addAttribute(new Attribute("lex", [], () => token.lex));
+  return TOKEN;
+};
