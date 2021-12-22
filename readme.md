@@ -3,7 +3,7 @@
 <div align="center"> 
 <h1>🤖 TinyCompTS</h1>
 
-A tiny Javascript/Typescript compiler written in vanilla Typescript as a hobby project.
+A tiny (~ 26kb) Javascript/Typescript compiler written in vanilla Typescript as a hobby project.
 </div>
 
 ## 📖 Guide
