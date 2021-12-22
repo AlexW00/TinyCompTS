@@ -7,11 +7,15 @@ import lexicalRuleset from "./config/exampleAttributeGrammar/exampelLexicalRules
 import syntaxRuleset from "./config/exampleAttributeGrammar/exampleSyntaxRuleset.ts";
 import semanticRuleset from "./config/exampleAttributeGrammar/exampleSemanticRuleset.ts";
 
+// ====================================================== //
+// ======================= Example ====================== //
+// ====================================================== //
+
 const lexer = new Lexer(lexicalRuleset);
 const parser = new Parser(syntaxRuleset, "PRINT_FUNCTION", ["whitespace"]);
 const codeGenerator = new CodeGenerator(semanticRuleset);
 
 const compiler = new Compiler(lexer, parser, codeGenerator);
-const compileResult = compiler.compile(`print(helloorld)`);
+const compileResult = compiler.compile(`print(Hello World)`);
 
 compileResult();

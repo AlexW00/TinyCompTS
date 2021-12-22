@@ -23,7 +23,7 @@ export default [
   },
   {
     name: "parameter",
-    regex: /[\w\d]+/,
+    regex: /[\w\d ]+/,
   },
 
   // ... more rules go here
