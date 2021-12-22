@@ -20,7 +20,7 @@ Create an object that implements [AttributeGrammar](/ts/attributeGrammar/attribu
 
 ## 📔 Example 
 
-→ see [example.ts](/ts/example.ts)
+→ see [example.ts](/example.ts)
 
 ## Import
 
