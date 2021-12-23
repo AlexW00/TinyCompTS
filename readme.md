@@ -45,6 +45,11 @@ Coming soon?
 2. Clone this repo & navigate into the root directory
 3. ```deno run ./example.ts```
 
+Alternatively, run via docker
+
+1. Clone this repo & navigate into the root directory
+2. ```docker run -it -v $PWD:/app denoland/deno:1.17.1 run --allow-net /app/example.ts```
+
 ## 👨‍💻 Development
 
 ### Coming soon features:
