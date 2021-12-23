@@ -44,3 +44,14 @@ Coming soon?
 1. Install the JS/TS runtime [Deno](https://deno.land/)
 2. Clone this repo & navigate into the root directory
 3. ```deno run ./example.ts```
+
+## 👨‍💻 Development
+
+### Coming soon features:
+
+- [ ] Circularity detection
+- [ ] Syntax Symbol options (e.g. "SYMBOL?" = SYMBOL appears 0 or multiple times)
+
+### Contributing
+
+Feel free to make a pull request if you like. Keep it minimal and efficient.
