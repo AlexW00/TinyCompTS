@@ -18,7 +18,7 @@ export default class AttributedParseTreeNode extends SyntaxParseTreeNode {
   value: any; // the value of this node (= "val" attribute of the semantic context)
 
   constructor(PST: SyntaxParseTreeNode, semanticRuleset: SemanticRuleset) {
-    super(PST.productionRule, PST.childNodes, PST.token);
+    super(PST.productionRule, PST.childNodes, PST.token, PST.quantifier);
 
     this.semanticRuleset = semanticRuleset;
     if (this.childNodes) this.childNodes = this.mapChildNodes(PST); // if child nodes exist, recursively map them as APTRN nodes

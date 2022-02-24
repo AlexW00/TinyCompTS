@@ -1,4 +1,4 @@
-import { Symbol } from "../parser/Symbol.ts";
+import { Symbol, Quantifier, getSymbolQuantifier } from "../parser/Symbol.ts";
 import Attribute from "../codeGenerator/Attribute.ts";
 import SemanticContext from "../codeGenerator/SemanticContext.ts";
 
@@ -13,6 +13,7 @@ export default class Token implements Symbol {
   // Attributed symbol interface attributes
   name: string;
   isTerminal = true;
+  quantifier: Quantifier;
 
   // Token specific attributes
   line: number;
@@ -23,6 +24,7 @@ export default class Token implements Symbol {
   constructor(type: string, lex: string, line: number, char: number) {
     this.name = type;
     this.lex = lex;
+    this.quantifier = getSymbolQuantifier(lex);
     this.line = line;
     this.char = char;
     this.id = Token.numOfTokens++;

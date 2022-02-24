@@ -1,7 +1,5 @@
 import Token from "../lexer/Token.ts";
-import ProductionRule from "./ProductionRule.ts";
 import SyntaxRule from "./SyntaxRule.ts";
-import { Symbol } from "./Symbol.ts";
 import SyntaxParseTree from "./SyntaxParseTree.ts";
 import SyntaxRuleset from "../attributeGrammar/syntaxRuleset.ts";
 

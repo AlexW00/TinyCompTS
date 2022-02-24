@@ -30,8 +30,8 @@ const exampleLexicalRuleset: LexicalRuleset = {
   parameter: {
     regex: /[\w\d ]+/,
   },
-  hiFunction: {
-    regex: /hi/,
+  hi: {
+    regex: /\$/,
   },
   // ... more lexical rules go here
 };

@@ -2,7 +2,14 @@ import Token from "../lexer/Token.ts";
 import { ParseEndError, ParseRuleError } from "./ParserError.ts";
 import SyntaxParseTreeNode from "./SyntaxParseTreeNode.ts";
 import ProductionRule from "./ProductionRule.ts";
-import { Symbol } from "./Symbol.ts";
+import {
+  Symbol,
+  Quantifier,
+  makeSymbol,
+  getSymbolQuantifier,
+  symbolIsOptional,
+  symbolIsMore,
+} from "./Symbol.ts";
 import SyntaxRuleset from "../attributeGrammar/syntaxRuleset.ts";
 
 // ====================================================== //
@@ -13,6 +20,7 @@ export default class SyntaxRule implements Symbol {
   // symbol interface properties
   name: string;
   isTerminal = false;
+  quantifier: Quantifier;
 
   static stack: SyntaxRule[] = [];
 
@@ -24,6 +32,7 @@ export default class SyntaxRule implements Symbol {
   constructor(name: string, syntaxRuleset: SyntaxRuleset) {
     this.name = name;
     this.syntaxRuleset = syntaxRuleset;
+    this.quantifier = getSymbolQuantifier(name);
     console.log("new syntax rule:", this.name);
     this.productionRules = Object.keys(this.syntaxRuleset[name]).map(
       (syntaxRuleType) =>
@@ -31,10 +40,7 @@ export default class SyntaxRule implements Symbol {
           name,
           syntaxRuleType,
           this.syntaxRuleset[name][syntaxRuleType].map((symbol) => {
-            return {
-              name: symbol,
-              isTerminal: symbol.charAt(0).toUpperCase() !== symbol.charAt(0),
-            };
+            return makeSymbol(symbol);
           })
         )
     );
@@ -47,6 +53,8 @@ export default class SyntaxRule implements Symbol {
       SPTN = this.checkProductionRule(this.productionRules[ruleName], tokens);
       if (SPTN) return SPTN;
     }
+    console.log(this.productionRules);
+    console.log(tokens);
     throw new ParseRuleError();
   }
 
@@ -56,14 +64,20 @@ export default class SyntaxRule implements Symbol {
     tokens: Token[]
   ): SyntaxParseTreeNode | false => {
     let t = [...tokens];
-    const candidateNode = new SyntaxParseTreeNode(productionRule);
+    const candidateNode = new SyntaxParseTreeNode(
+      productionRule,
+      [],
+      null,
+      this.quantifier
+    );
 
+    let isOptional: boolean | null = null;
     // iterate over the production rule's syntax symbols and check whether they match the tokens
     for (let i = 0; i < productionRule.syntaxSymbols.length; i++) {
       const symbol = productionRule.syntaxSymbols[i];
+      if (isOptional === null) isOptional = symbolIsOptional(symbol);
       if (!symbol.isTerminal) {
         // non-terminal symbol → recursively check its production rules
-
         const candidateRule = new SyntaxRule(symbol.name, this.syntaxRuleset);
         const isRecursive =
           SyntaxRule.stack.findIndex((rule) => rule.name === symbol.name) !==
@@ -82,7 +96,7 @@ export default class SyntaxRule implements Symbol {
           const numRemoved = candidateNodeChildren.getLeaves().length;
           candidateNode.childNodes.push(candidateNodeChildren);
           t = t.slice(numRemoved);
-        } else break;
+        } else if (!isOptional) return false;
       } else {
         // terminal symbol → check if the next token matches the terminal symbol
         if (t[0].name === symbol.name) {
@@ -92,21 +106,22 @@ export default class SyntaxRule implements Symbol {
               new SyntaxParseTreeNode(
                 new ProductionRule("TOKEN", "_", []),
                 [],
-                lastToken
+                lastToken,
+                lastToken.quantifier
               )
             );
+            if (symbolIsMore(symbol)) {
+              i--;
+              isOptional = true;
+              continue;
+            }
           } else throw new ParseEndError();
-        } else {
-          // not a valid terminal symbol, continue parsing
-          break;
-        }
+        } else if (!isOptional) return false;
       }
+      isOptional = null;
     }
-    if (
-      candidateNode.childNodes.length === productionRule.syntaxSymbols.length
-    ) {
-      return candidateNode;
-    } else return false;
+
+    return candidateNode;
   };
 
   // Returns the first SyntaxRule from rules, that matches rule.name
