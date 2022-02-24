@@ -21,7 +21,7 @@ const exampleSyntaxRuleset: SyntaxRuleset = {
 
     _: [
       "printFunctionName",
-      "hi?",
+      "hi+",
       "parameterStart",
       "parameter",
       "parameterEnd",

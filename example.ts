@@ -30,7 +30,10 @@ const compilerOptions: TinyCompOptions = {
 
 // instantiate the compiler and compile the input
 const compiler = new TinyComp(attributeGrammar, compilerOptions);
-const compileResult = compiler.compile(`print(Hello World)`, "PRINT_FUNCTION");
+const compileResult = compiler.compile(
+  `print$$(Hello World)`,
+  "PRINT_FUNCTION"
+);
 
 // execute the compiled code (in this case it is a function that prints "Hello World"),
 // but it could be any other JavaScript code like e.g. an object
