@@ -3,6 +3,7 @@ import { ParseEndError, ParseRuleError } from "./ParserError.ts";
 import SyntaxParseTreeNode from "./SyntaxParseTreeNode.ts";
 import ProductionRule from "./ProductionRule.ts";
 import { Symbol } from "./Symbol.ts";
+import SyntaxRuleset from "../attributeGrammar/syntaxRuleset.ts";
 
 // ====================================================== //
 // ===================== SyntaxRule ===================== //
@@ -13,12 +14,30 @@ export default class SyntaxRule implements Symbol {
   name: string;
   isTerminal = false;
 
+  static stack: SyntaxRule[] = [];
+
+  syntaxRuleset: SyntaxRuleset;
+
   // SyntaxRule properties
   productionRules: ProductionRule[];
 
-  constructor(name: string, productionRules: ProductionRule[]) {
+  constructor(name: string, syntaxRuleset: SyntaxRuleset) {
     this.name = name;
-    this.productionRules = productionRules;
+    this.syntaxRuleset = syntaxRuleset;
+    console.log("new syntax rule:", this.name);
+    this.productionRules = Object.keys(this.syntaxRuleset[name]).map(
+      (syntaxRuleType) =>
+        new ProductionRule(
+          name,
+          syntaxRuleType,
+          this.syntaxRuleset[name][syntaxRuleType].map((symbol) => {
+            return {
+              name: symbol,
+              isTerminal: symbol.charAt(0).toUpperCase() !== symbol.charAt(0),
+            };
+          })
+        )
+    );
   }
 
   // check whether the given tokens match one of the production rules
@@ -44,9 +63,21 @@ export default class SyntaxRule implements Symbol {
       const symbol = productionRule.syntaxSymbols[i];
       if (!symbol.isTerminal) {
         // non-terminal symbol → recursively check its production rules
-        const candidateNodeChildren = (
-          symbol as SyntaxRule
-        ).checkProductionRules(t);
+
+        const candidateRule = new SyntaxRule(symbol.name, this.syntaxRuleset);
+        const isRecursive =
+          SyntaxRule.stack.findIndex((rule) => rule.name === symbol.name) !==
+          -1;
+        if (isRecursive)
+          throw new Error(
+            "Recursion in Syntax Rule: " +
+              symbol.name +
+              " with stack: " +
+              SyntaxRule.stack.map((rule) => rule.name).join(", ")
+          );
+        SyntaxRule.stack.push(candidateRule);
+        const candidateNodeChildren = candidateRule.checkProductionRules(t);
+        SyntaxRule.stack.pop();
         if (candidateNodeChildren) {
           const numRemoved = candidateNodeChildren.getLeaves().length;
           candidateNode.childNodes.push(candidateNodeChildren);
@@ -71,9 +102,11 @@ export default class SyntaxRule implements Symbol {
         }
       }
     }
-    if (candidateNode.childNodes.length === productionRule.syntaxSymbols.length)
+    if (
+      candidateNode.childNodes.length === productionRule.syntaxSymbols.length
+    ) {
       return candidateNode;
-    else return false;
+    } else return false;
   };
 
   // Returns the first SyntaxRule from rules, that matches rule.name

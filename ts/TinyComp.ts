@@ -35,9 +35,10 @@ export default class TinyComp {
     this.codeGenerator = new CodeGenerator(attributeGrammar.semanticRuleset);
   }
 
-  compile(input: string): any {
+  compile(input: string, startSyntaxRuleName: string): any {
     const tokens = this.lexer.tokenize(input);
-    const syntaxParseTree = this.parser.parse(tokens);
+    const syntaxParseTree = this.parser.parse(tokens, startSyntaxRuleName);
+    console.log(syntaxParseTree);
     return this.codeGenerator.generate(syntaxParseTree);
   }
 }
