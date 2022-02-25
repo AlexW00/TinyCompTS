@@ -25,11 +25,13 @@ export default class TinyComp {
   lexer: Lexer;
   parser: Parser;
   codeGenerator: CodeGenerator;
+  compilerOptions: TinyCompOptions;
 
   constructor(
     attributeGrammar: AttributeGrammar,
     compilerOptions: TinyCompOptions
   ) {
+    this.compilerOptions = compilerOptions;
     this.lexer = new Lexer(attributeGrammar.lexicalRuleset);
     this.parser = new Parser(
       attributeGrammar.syntaxRuleset,
@@ -39,9 +41,12 @@ export default class TinyComp {
     this.codeGenerator = new CodeGenerator(attributeGrammar.semanticRuleset);
   }
 
-  compile(input: string, startSyntaxRuleName: string): any {
+  compile(input: string): any {
     const tokens = this.lexer.tokenize(input);
-    const syntaxParseTree = this.parser.parse(tokens, startSyntaxRuleName);
+    const syntaxParseTree = this.parser.parse(
+      tokens,
+      this.compilerOptions.startSymbol
+    );
     return this.codeGenerator.generate(syntaxParseTree);
   }
 }

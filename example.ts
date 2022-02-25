@@ -31,8 +31,7 @@ const compilerOptions: TinyCompOptions = {
 // instantiate the compiler and compile the input
 const compiler = new TinyComp(attributeGrammar, compilerOptions);
 const compileResult = compiler.compile(
-  `print(Hello World,Optional Hello World)`,
-  "PRINT_FUNCTION"
+  `print(Hello World,Optional Hello World)`
 );
 
 // execute the compiled code (in this case it is a function that prints "Hello World" and "Optional Hello World")"),
