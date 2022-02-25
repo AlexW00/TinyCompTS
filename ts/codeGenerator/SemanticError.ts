@@ -31,3 +31,13 @@ export class DuplicateAttributeError extends SemanticError {
     this.message = message;
   }
 }
+
+export class MissingSemanticContextError extends SemanticError {
+  constructor(semanticContextName: string) {
+    const message =
+      "No semantic context found named '" + semanticContextName + "'";
+    super(message);
+    this.name = "MissingSemanticContextError";
+    this.message = message;
+  }
+}

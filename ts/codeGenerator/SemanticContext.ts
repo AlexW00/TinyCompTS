@@ -7,6 +7,10 @@ import { DuplicateAttributeError } from "./SemanticError.ts";
 
 export default class SemanticContext {
   attributes: Attribute[] = []; // the list of attributes this context consists of
+  syntaxRuleName: string; // the name of the syntax rule this context is used in
+  constructor(syntaxRuleName: string) {
+    this.syntaxRuleName = syntaxRuleName;
+  }
 
   // adds an attribute to this context
   addAttribute(attribute: Attribute) {

@@ -35,7 +35,6 @@ export function symbolIsTerminal(name: string): boolean {
 }
 
 export function getSymbolQuantifier(name: string): Quantifier {
-  console.log("getSymbolQuantifier:", name);
   const lastChar = name.charAt(name.length - 1);
   if (lastChar === "?") return Quantifier.ONE_OR_ZERO;
   else if (lastChar === "*") return Quantifier.ZERO_OR_MORE;

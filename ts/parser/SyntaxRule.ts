@@ -33,7 +33,6 @@ export default class SyntaxRule implements Symbol {
     this.name = name;
     this.syntaxRuleset = syntaxRuleset;
     this.quantifier = getSymbolQuantifier(name);
-    console.log("new syntax rule:", this.name);
     this.productionRules = Object.keys(this.syntaxRuleset[name]).map(
       (syntaxRuleType) =>
         new ProductionRule(
@@ -53,8 +52,6 @@ export default class SyntaxRule implements Symbol {
       SPTN = this.checkProductionRule(this.productionRules[ruleName], tokens);
       if (SPTN) return SPTN;
     }
-    console.log(this.productionRules);
-    console.log(tokens);
     throw new ParseRuleError();
   }
 

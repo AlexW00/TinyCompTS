@@ -34,7 +34,7 @@ export default class Token implements Symbol {
 // The standard semantic function for a token (do not touch)
 // use .getAttribute("lex"/"val") to get either the name or lex attribute of a token
 export const tokenSemanticFunction = (token: Token): SemanticContext => {
-  const TOKEN = new SemanticContext();
+  const TOKEN = new SemanticContext(token.name);
   TOKEN.addAttribute(new Attribute("val", [], () => token.name));
   TOKEN.addAttribute(new Attribute("lex", [], () => token.lex));
   return TOKEN;

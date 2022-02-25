@@ -6,9 +6,18 @@
 A tiny (~ 26kb) Javascript/Typescript compiler written in vanilla Typescript as a hobby project.
 </div>
 
+## 🦾 Capabilities
+
+- **Tokens**: [Maximum Munch](https://en.wikipedia.org/wiki/Maximal_munch), RegEx matching
+- **Syntax**: [Recursive descent parser](https://en.wikipedia.org/wiki/Recursive_descent_parser)
+  - → linear time complexity
+  - → support for [LL-Type Context Free Grammars](https://en.wikipedia.org/wiki/LL_grammar)
+- **Semantics**: Bottom-up, demand driven evaluation
+  - → support for arbitrary, non-recursive [Attribute Grammars](https://en.wikipedia.org/wiki/Attribute_grammar)
+
 ## 📖 Guide
 
-### Define an attribute grammar
+### 1. Define an **attribute grammar**
 
 Create an object that implements [AttributeGrammar](/ts/attributeGrammar/attributeGrammar.ts):
 
@@ -16,7 +25,7 @@ Create an object that implements [AttributeGrammar](/ts/attributeGrammar/attribu
 2. Define a syntax ruleset by creating an object that implements [SyntaxRuleset](/ts/attributeGrammar/syntaxRuleset.ts)
 3. Define a semantic ruleset by creating an object that implements [SemanticRuleset](/ts/attributeGrammar/semanticRuleset.ts)
 
-### Configure TinyComp
+### 2. Configure TinyComp
 
 1. Create an object that implements [TinyCompOptions](/ts/TinyComp.ts)
 2. Create an instance of [TinyComp](/ts/TinyComp.ts) using the AttributeGrammar and TinyCompOptions object
@@ -51,11 +60,6 @@ Alternatively, run via docker
 2. ```docker run -it -v $PWD:/app denoland/deno:1.17.1 run --allow-net /app/example.ts```
 
 ## 👨‍💻 Development
-
-### Coming soon features:
-
-- [ ] Circularity detection
-- [ ] Syntax Symbol options (e.g. "SYMBOL?" = SYMBOL appears 0 or multiple times)
 
 ### Contributing
 

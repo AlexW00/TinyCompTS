@@ -2,6 +2,7 @@ import Token from "../lexer/Token.ts";
 import SyntaxRule from "./SyntaxRule.ts";
 import SyntaxParseTree from "./SyntaxParseTree.ts";
 import SyntaxRuleset from "../attributeGrammar/syntaxRuleset.ts";
+import { LeftOverTokenError } from "./ParserError.ts";
 
 // ##################################################################### //
 // ############################### Parser ############################## //
@@ -23,7 +24,11 @@ export default class Parser {
   }
 
   // parses the given tokens and returns a SyntaxParseTree if successful
-  parse(tokens: Token[], startSyntaxRuleName: string): SyntaxParseTree {
+  parse(
+    tokens: Token[], // the tokens to be parsed
+    startSyntaxRuleName: string, // the name of the start symbol
+    doIgnoreLeftOverTokens = false // whether to check for left over tokens after parsing
+  ): SyntaxParseTree {
     // deno-lint-ignore no-this-alias
     const context = this;
     const filteredTokens = tokens.filter(function (obj) {
@@ -33,8 +38,18 @@ export default class Parser {
       startSyntaxRuleName,
       this.syntaxRuleset
     );
-    return new SyntaxParseTree(
+    const syntaxParseTree = new SyntaxParseTree(
       startSyntaxRule.checkProductionRules(filteredTokens)
     );
+    if (!doIgnoreLeftOverTokens)
+      this._checkForLeftOverTokens(filteredTokens, syntaxParseTree);
+    return syntaxParseTree;
+  }
+
+  _checkForLeftOverTokens(tokens: Token[], syntaxParseTree: SyntaxParseTree) {
+    const numOfParsedTokens = syntaxParseTree.getLeaves().length;
+    if (numOfParsedTokens !== tokens.length) {
+      throw new LeftOverTokenError(tokens.length - numOfParsedTokens, tokens);
+    }
   }
 }

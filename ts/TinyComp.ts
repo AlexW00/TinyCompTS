@@ -6,6 +6,10 @@
 import AttributeGrammar from "./attributeGrammar/attributeGrammar.ts";
 import LexicalRuleset from "./attributeGrammar/lexicalRuleset.ts";
 import SyntaxRuleset from "./attributeGrammar/syntaxRuleset.ts";
+import {
+  _getFirstSemanticContextBySyntaxRuleName,
+  _getSemanticContextsBySyntaxRuleName,
+} from "./attributeGrammar/semanticRuleset.ts";
 import SemanticRuleset from "./attributeGrammar/semanticRuleset.ts";
 import Lexer from "./lexer/Lexer.ts";
 import Parser from "./parser/Parser.ts";
@@ -48,4 +52,9 @@ export type {
   SyntaxRuleset,
   SemanticRuleset,
   TinyCompOptions,
+};
+
+export {
+  _getFirstSemanticContextBySyntaxRuleName,
+  _getSemanticContextsBySyntaxRuleName,
 };
