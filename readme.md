@@ -9,9 +9,14 @@ A tiny (~ 26kb) Javascript/Typescript compiler written in vanilla Typescript as 
 ## 🦾 Capabilities
 
 - **Tokens**: [Maximum Munch](https://en.wikipedia.org/wiki/Maximal_munch), RegEx matching
-- **Syntax**: [Recursive descent parser](https://en.wikipedia.org/wiki/Recursive_descent_parser)
-  - → linear time complexity
-  - → support for [LL-Type Context Free Grammars](https://en.wikipedia.org/wiki/LL_grammar)
+- **Syntax**: 
+  - [Recursive descent parser](https://en.wikipedia.org/wiki/Recursive_descent_parser)
+    - → linear time complexity
+    - → support for [LL-Type Context Free Grammars](https://en.wikipedia.org/wiki/LL_grammar)
+  - Quantifier support (→ see example [SyntaxRuleset](/ts/attributeGrammar/syntaxRuleset.ts)):
+    - `?` = zero or one
+    - `*` = zero or more
+    - `+` = one or more
 - **Semantics**: Bottom-up, demand driven evaluation
   - → support for arbitrary, non-recursive [Attribute Grammars](https://en.wikipedia.org/wiki/Attribute_grammar)
 
