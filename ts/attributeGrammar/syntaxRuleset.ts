@@ -21,13 +21,17 @@ const exampleSyntaxRuleset: SyntaxRuleset = {
 
     _: [
       "printFunctionName",
-      "hi+",
       "parameterStart",
       "parameter",
+      "EXTRA_PARAMETER?",
       "parameterEnd",
     ],
 
     //... more production rules go here
+  },
+
+  EXTRA_PARAMETER: {
+    _: ["parameterSeperator", "parameter"],
   },
 
   // more syntax rules go here

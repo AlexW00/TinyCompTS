@@ -42,7 +42,6 @@ export default class TinyComp {
   compile(input: string, startSyntaxRuleName: string): any {
     const tokens = this.lexer.tokenize(input);
     const syntaxParseTree = this.parser.parse(tokens, startSyntaxRuleName);
-    //console.log(JSON.stringify(syntaxParseTree, null, 2));
     return this.codeGenerator.generate(syntaxParseTree);
   }
 }

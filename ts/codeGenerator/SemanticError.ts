@@ -35,7 +35,9 @@ export class DuplicateAttributeError extends SemanticError {
 export class MissingSemanticContextError extends SemanticError {
   constructor(semanticContextName: string) {
     const message =
-      "No semantic context found named '" + semanticContextName + "'";
+      "No semantic context found for non optional syntax rule named '" +
+      semanticContextName +
+      "'";
     super(message);
     this.name = "MissingSemanticContextError";
     this.message = message;

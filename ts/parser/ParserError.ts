@@ -18,8 +18,10 @@ export class ParseEndError extends ParserError {
 }
 
 export class ParseRuleError extends ParserError {
-  constructor() {
-    const message = "No production rule matched";
+  constructor(tokens: Token[]) {
+    const message =
+      "No production rule matched for tokens: " +
+      tokens.map((t) => t.lex).join(", ");
     super(message);
     this.name = "ParseEndError";
     this.message = message;

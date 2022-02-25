@@ -38,9 +38,9 @@ export default class Parser {
       startSyntaxRuleName,
       this.syntaxRuleset
     );
-    const syntaxParseTree = new SyntaxParseTree(
-      startSyntaxRule.checkProductionRules(filteredTokens)
-    );
+    const rootNode = startSyntaxRule.checkProductionRules(filteredTokens);
+    if (!rootNode) throw new Error("Could not parse the given tokens.");
+    const syntaxParseTree = new SyntaxParseTree(rootNode);
     if (!doIgnoreLeftOverTokens)
       this._checkForLeftOverTokens(filteredTokens, syntaxParseTree);
     return syntaxParseTree;

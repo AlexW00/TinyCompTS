@@ -46,13 +46,14 @@ export default class SyntaxRule implements Symbol {
   }
 
   // check whether the given tokens match one of the production rules
-  checkProductionRules(tokens: Token[]): SyntaxParseTreeNode {
+  checkProductionRules(tokens: Token[]): SyntaxParseTreeNode | false {
     let SPTN: SyntaxParseTreeNode | false = false;
     for (const ruleName in this.productionRules) {
       SPTN = this.checkProductionRule(this.productionRules[ruleName], tokens);
       if (SPTN) return SPTN;
     }
-    throw new ParseRuleError();
+    return SPTN;
+    //throw new ParseRuleError(tokens);
   }
 
   // check whether the given tokens match the given production rule
@@ -73,6 +74,7 @@ export default class SyntaxRule implements Symbol {
     for (let i = 0; i < productionRule.syntaxSymbols.length; i++) {
       const symbol = productionRule.syntaxSymbols[i];
       if (isOptional === null) isOptional = symbolIsOptional(symbol);
+
       if (!symbol.isTerminal) {
         // non-terminal symbol → recursively check its production rules
         const candidateRule = new SyntaxRule(symbol.name, this.syntaxRuleset);
