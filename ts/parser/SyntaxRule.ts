@@ -74,7 +74,10 @@ export default class SyntaxRule implements Symbol {
     for (let i = 0; i < productionRule.syntaxSymbols.length; i++) {
       const symbol = productionRule.syntaxSymbols[i];
       if (isOptional === null) isOptional = symbolIsOptional(symbol);
-
+      if (isOptional && t.length === 0) {
+        // if the symbol is optional and the tokens are empty, we can return the candidate node
+        return candidateNode;
+      }
       if (!symbol.isTerminal) {
         // non-terminal symbol → recursively check its production rules
         const candidateRule = new SyntaxRule(symbol.name, this.syntaxRuleset);
