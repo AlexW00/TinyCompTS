@@ -45,13 +45,16 @@ Create an object that implements [AttributeGrammar](/ts/attributeGrammar/attribu
 ### 🦖 Denoland
 
 ```
-import TinyComp, {AttributeGrammar, LexicalRuleset, SemanticRuleset, SyntaxRuleset, TinyCompOptions} 
-    from "https://deno.land/x/tiny_comp_ts@v1.1.1/ts/TinyComp.ts";
+import TinyComp, {...} from "https://deno.land/x/tiny_comp_ts@v1.1.1/ts/TinyComp.ts";
 ```
 
 ### ❤️ Npm
 
-Coming soon?
+```
+npm i tiny-comp
+
+import TinyComp, {...} from "tiny-comp";
+```
 
 ### 🧪 Just test
 

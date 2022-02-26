@@ -6,6 +6,8 @@
 import AttributeGrammar from "./attributeGrammar/attributeGrammar.ts";
 import LexicalRuleset from "./attributeGrammar/lexicalRuleset.ts";
 import SyntaxRuleset from "./attributeGrammar/syntaxRuleset.ts";
+import SemanticContext from "./codeGenerator/SemanticContext.ts";
+import Attribute from "./codeGenerator/Attribute.ts";
 import {
   _getFirstSemanticContextBySyntaxRuleName,
   _getSemanticContextsBySyntaxRuleName,
@@ -61,4 +63,6 @@ export type {
 export {
   _getFirstSemanticContextBySyntaxRuleName,
   _getSemanticContextsBySyntaxRuleName,
+  SemanticContext,
+  Attribute,
 };
