@@ -95,6 +95,12 @@ export default class SyntaxRule implements Symbol {
           const numRemoved = candidateNodeChildren.getLeaves().length;
           candidateNode.childNodes.push(candidateNodeChildren);
           t = t.slice(numRemoved);
+
+          if (symbolIsMore(symbol)) {
+            i--;
+            isOptional = true;
+            continue;
+          }
         } else if (!isOptional) return false;
       } else {
         // terminal symbol → check if the next token matches the terminal symbol
