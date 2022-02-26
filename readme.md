@@ -45,7 +45,7 @@ Create an object that implements [AttributeGrammar](/ts/attributeGrammar/attribu
 ### 🦖 Denoland
 
 ```
-import TinyComp, {...} from "https://deno.land/x/tiny_comp_ts@v1.1.1/ts/TinyComp.ts";
+import TinyComp, {...} from "https://deno.land/x/tiny_comp_ts/ts/TinyComp.ts";
 ```
 
 ### ❤️ Npm
