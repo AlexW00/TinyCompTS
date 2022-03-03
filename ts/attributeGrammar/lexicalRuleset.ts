@@ -16,7 +16,7 @@ export default interface LexicalRuleset {
 const exampleLexicalRuleset: LexicalRuleset = {
   // the name of the token
   whitespace: {
-    regex: /([^\S\r\n])/, // the regex that matches the token
+    regex: /([\s\r\n])/, // the regex that matches the token
   },
   printFunctionName: {
     regex: /print/,
@@ -28,7 +28,7 @@ const exampleLexicalRuleset: LexicalRuleset = {
     regex: /\)/,
   },
   parameter: {
-    regex: /[\w\d ]+/,
+    regex: /"[\w\d ]+"/,
   },
   parameterSeperator: {
     regex: /,/,
