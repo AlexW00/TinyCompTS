@@ -16,6 +16,8 @@ import SemanticRuleset from "./attributeGrammar/semanticRuleset.ts";
 import Lexer from "./lexer/Lexer.ts";
 import Parser from "./parser/Parser.ts";
 import CodeGenerator from "./codeGenerator/CodeGenerator.ts";
+import Token from "./lexer/Token.ts";
+import SyntaxRule from "./parser/SyntaxRule.ts";
 
 // Interface that describes extra options for the compiler
 interface TinyCompOptions {
@@ -49,6 +51,8 @@ export default class TinyComp {
       tokens,
       this.compilerOptions.startSymbol
     );
+    Token.numOfTokens = 0;
+    SyntaxRule.stack = [];
     return this.codeGenerator.generate(syntaxParseTree);
   }
 }

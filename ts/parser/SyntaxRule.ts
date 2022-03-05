@@ -84,13 +84,14 @@ export default class SyntaxRule implements Symbol {
         const isRecursive =
           SyntaxRule.stack.findIndex((rule) => rule.name === symbol.name) !==
           -1;
-        if (isRecursive)
+        if (isRecursive) {
           throw new Error(
             "Recursion in Syntax Rule: " +
               symbol.name +
               " with stack: " +
               SyntaxRule.stack.map((rule) => rule.name).join(", ")
           );
+        }
         SyntaxRule.stack.push(candidateRule);
         const candidateNodeChildren = candidateRule.checkProductionRules(t);
         SyntaxRule.stack.pop();
