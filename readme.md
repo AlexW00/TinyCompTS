@@ -72,3 +72,7 @@ Alternatively, run via docker
 ### Contributing
 
 Feel free to make a pull request if you like. Keep it minimal and efficient.
+
+### Codebase diagram:
+
+![Visualization of the codebase](./diagram.svg)
